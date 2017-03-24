@@ -1,0 +1,12 @@
+# See http://docs.travis-ci.com/user/languages/csharp/ for details
+
+language: csharp
+mono: none
+dotnet: 1.0.1
+dist: trusty
+
+script:
+  - dotnet restore src/NodaTime.Serialization.JsonNet
+  - dotnet restore src/NodaTime.Serialization.Test
+  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp1.0
+  - dotnet run -p src/NodaTime.Serialization.Test/*.csproj -f netcoreapp1.0
