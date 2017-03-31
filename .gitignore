@@ -27,6 +27,8 @@ Thumbs.db
 **/bin/
 **/obj/
 
+# Release build output
+/build/releasebuild
+
 # NUnit output
 TestResult.xml
-

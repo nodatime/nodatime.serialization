@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# TODO: Work out how this changes when we've got multple projects.
+# It currently "knows" about NodaTime.Serialization.JsonNet in terms of
+# tags and what gets built.
+
 set -e
 
 cd $(dirname $0)
@@ -21,7 +25,7 @@ declare -r OUTPUT=artifacts
 rm -rf releasebuild
 git clone https://github.com/nodatime/nodatime.serialization.git releasebuild
 cd releasebuild
-git checkout "$VERSION"
+git checkout "NodaTime.Serialization.JsonNet-$VERSION"
 
 # See https://github.com/nodatime/nodatime/issues/713
 # and https://github.com/NuGet/Home/issues/3953
@@ -32,7 +36,6 @@ dotnet restore $RESTORE_FLAG src/NodaTime.Serialization.Test
 dotnet build -c Release $BUILD_FLAG src/NodaTime.Serialization.JsonNet
 dotnet build -c Release $BUILD_FLAG src/NodaTime.Serialization.Test
 
-# Even run the slow tests before a release...
 dotnet run -c Release -p src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj -f netcoreapp1.0
 dotnet run -c Release -p src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj -f net451
 
@@ -40,4 +43,3 @@ mkdir $OUTPUT
 
 dotnet pack --include-symbols --no-build -c Release $BUILD_FLAG src/NodaTime.Serialization.JsonNet
 cp src/NodaTime.Serialization.JsonNet/bin/Release/*.nupkg $OUTPUT
-cp src/NodaTime.Testing/bin/Release/*.nupkg $OUTPUT
