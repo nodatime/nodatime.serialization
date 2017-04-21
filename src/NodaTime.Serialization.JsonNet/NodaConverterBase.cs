@@ -16,8 +16,9 @@ namespace NodaTime.Serialization.JsonNet
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public abstract class NodaConverterBase<T> : JsonConverter
     {
-        private static readonly Type NullableT = typeof(T).GetTypeInfo().IsValueType 
-            ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
+        private static readonly TypeInfo typeInfo = typeof(T).GetTypeInfo();
+        private static readonly Type NullableT = typeInfo.IsValueType 
+            ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);        
 
         /// <summary>
         /// Returns whether or not this converter supports the given type.
@@ -26,7 +27,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <returns>True if the given type is supported by this converter (including the nullable form for
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType) =>
-            typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo())
+            typeInfo.IsAssignableFrom(objectType.GetTypeInfo())
             || objectType == NullableT;
 
         /// <summary>
