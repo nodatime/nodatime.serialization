@@ -41,5 +41,5 @@ dotnet run -c Release -p src/NodaTime.Serialization.Test/NodaTime.Serialization.
 
 mkdir $OUTPUT
 
-dotnet pack --include-symbols --no-build -c Release $BUILD_FLAG src/NodaTime.Serialization.JsonNet
+dotnet pack --no-build -c Release $BUILD_FLAG src/NodaTime.Serialization.JsonNet
 cp src/NodaTime.Serialization.JsonNet/bin/Release/*.nupkg $OUTPUT
