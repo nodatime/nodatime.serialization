@@ -19,6 +19,7 @@
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <Deterministic>True</Deterministic>
     <IncludeSymbols>True</IncludeSymbols>
+    <IncludeSource>True</IncludeSource>
   </PropertyGroup>
 
   <ItemGroup>
