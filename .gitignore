@@ -32,3 +32,6 @@ Thumbs.db
 
 # NUnit output
 TestResult.xml
+
+# BenchmarkDotNet output
+BenchmarkDotNet.Artifacts

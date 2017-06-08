@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.3" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+    <DefineConstants>$(DefineConstants);PCL</DefineConstants>
+  </PropertyGroup>
+
+</Project>
