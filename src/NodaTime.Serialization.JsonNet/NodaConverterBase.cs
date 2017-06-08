@@ -16,8 +16,18 @@ namespace NodaTime.Serialization.JsonNet
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public abstract class NodaConverterBase<T> : JsonConverter
     {
+        // For value types and sealed classes, we can optimize and not call IsAssignableFrom.
+        private static readonly bool CheckAssignableFrom =
+            !(typeof(T).GetTypeInfo().IsValueType || (typeof(T).GetTypeInfo().IsClass && typeof(T).GetTypeInfo().IsSealed));
+
         private static readonly Type NullableT = typeof(T).GetTypeInfo().IsValueType 
             ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
+
+        // TODO: It's not clear whether we *should* support inheritance here. The Json.NET docs
+        // aren't clear on when this is used - is it for reading or writing? If it's for both, that's
+        // a problem: our "writer" may be okay for subclasses, but that doesn't mean the "reader" is.
+        // This may well only be an issue for DateTimeZone, as everything else uses a sealed type (e.g. Period)
+        // or a value type.
 
         /// <summary>
         /// Returns whether or not this converter supports the given type.
@@ -26,8 +36,8 @@ namespace NodaTime.Serialization.JsonNet
         /// <returns>True if the given type is supported by this converter (including the nullable form for
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType) =>
-            typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo())
-            || objectType == NullableT;
+            objectType == typeof(T) || objectType == NullableT ||
+            (CheckAssignableFrom && typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()));
 
         /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
