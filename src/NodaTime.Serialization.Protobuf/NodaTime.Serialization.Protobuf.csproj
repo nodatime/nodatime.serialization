@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides serialization support between Noda Time and Google.Protobuf</Description>
+    <AssemblyTitle>Noda Time</AssemblyTitle>
+    <VersionPrefix>1.0.0-alpha01</VersionPrefix>
+    <Authors>Jon Skeet</Authors>
+    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageTags>nodatime;google;protobuf</PackageTags>
+    <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
+    <Deterministic>True</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="2.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.3.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="1.1.0" />
+  </ItemGroup>
+</Project>
