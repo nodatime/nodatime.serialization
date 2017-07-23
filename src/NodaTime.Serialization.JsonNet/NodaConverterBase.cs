@@ -52,10 +52,9 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (reader.TokenType == JsonToken.Null)
             {
-                if (objectType != NullableT)
-                {
-                    throw new InvalidNodaDataException($"Cannot convert null value to {objectType}.");
-                }
+                Preconditions.CheckData(objectType == NullableT,
+                    "Cannot convert null value to {0}",
+                    objectType);
                 return null;
             }
 
@@ -65,10 +64,9 @@ namespace NodaTime.Serialization.JsonNet
                 string value = (string) reader.Value;
                 if (value == "")
                 {
-                    if (objectType != NullableT)
-                    {
-                        throw new InvalidNodaDataException($"Cannot convert null value to {objectType}.");
-                    }
+                    Preconditions.CheckData(objectType == NullableT,
+                        "Cannot convert null value to {0}",
+                        objectType);
                     return null;
                 }
             }
@@ -99,18 +97,16 @@ namespace NodaTime.Serialization.JsonNet
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             // Json.NET should prevent this happening, but let's validate...
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            Preconditions.CheckNotNull(value, nameof(value));
 
             // Note: don't need to worry about value is T? due to the way boxing works.
             // Again, Json.NET probably prevents us from needing to check this, really.
-            if (!(value is T))
+            if (value is T castValue)
             {
-                throw new ArgumentException($"Unexpected value when converting. Expected {typeof (T).FullName}, got {value.GetType().FullName}.");
+                WriteJsonImpl(writer, castValue, serializer);
+                return;
             }
-            WriteJsonImpl(writer, (T)value, serializer);
+            throw new ArgumentException($"Unexpected value when converting. Expected {typeof(T).FullName}, got {value.GetType().FullName}.");
         }
 
         /// <summary>
