@@ -11,12 +11,10 @@
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>NodaTime.Serialization.JsonNet</PackageId>
     <PackageTags>nodatime;json;jsonnet</PackageTags>
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/nodatime/nodatime.git</RepositoryUrl>
-    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
     <Deterministic>True</Deterministic>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -26,9 +24,5 @@
     <PackageReference Include="NodaTime" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);PCL</DefineConstants>
-  </PropertyGroup>
 
 </Project>
