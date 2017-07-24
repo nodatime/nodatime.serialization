@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj" />
+    <ProjectReference Include="..\NodaTime.Serialization.Protobuf\NodaTime.Serialization.Protobuf.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,11 +35,58 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <DefineConstants>$(DefineConstants);PCL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+  <ItemGroup>
+    <!-- Nesting for tests -->
+    <Compile Update="Protobuf/ProtobufExtensionsTest.*.cs">
+      <DependentUpon>Protobuf/ProtobufExtensionsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf/NodaExtensionsTest.*.cs">
+      <DependentUpon>Protobuf/NodaExtensionsTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.ToProtobufDuration.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.ToProtobufDuration.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.ToProtobufDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.ToProtobufDayOfWeek.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDuration.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToProtobufDuration.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.ToProtobufDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToTimeOfDay.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToTimeOfDay.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToProtobufDayOfWeek.ToProtobufDuration.cs">
+      <DependentUpon>NodaExtensionsTest.ToProtobufDayOfWeek.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToProtobufDayOfWeek.ToProtobufDuration.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToProtobufDayOfWeek.ToProtobufDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToProtobufDayOfWeek.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToProtobufDayOfWeek.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\NodaExtensionsTest.ToProtobufDuration.ToTimestamp.cs">
+      <DependentUpon>NodaExtensionsTest.ToProtobufDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\ProtobufExtensionsTest.ToLocalTime.ToInstant.cs">
+      <DependentUpon>ProtobufExtensionsTest.ToLocalTime.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\ProtobufExtensionsTest.ToLocalTime.ToIsoDayOfWeek.cs">
+      <DependentUpon>ProtobufExtensionsTest.ToLocalTime.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Protobuf\ProtobufExtensionsTest.ToLocalTime.ToNodaDuration.cs">
+      <DependentUpon>ProtobufExtensionsTest.ToLocalTime.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

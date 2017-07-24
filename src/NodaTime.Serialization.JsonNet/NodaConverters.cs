@@ -109,11 +109,9 @@ namespace NodaTime.Serialization.JsonNet
         {
             var calendar = calendarProjection(value);
             // We rely on CalendarSystem.Iso being a singleton here.
-            if (calendar != CalendarSystem.Iso)
-            {
-                throw new ArgumentException(
-                    $"Values of type {typeof(T).Name} must (currently) use the ISO calendar in order to be serialized.");
-            }
+            Preconditions.CheckArgument(calendar == CalendarSystem.Iso,
+                "Values of type {0} must (currently) use the ISO calendar in order to be serialized.",
+                typeof(T).Name);
         };
     }
 }

@@ -37,12 +37,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
         public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)
         {
-            // Note: We could use Preconditions.CheckNotNull, but only if we either made that public in NodaTime
-            // or made InternalsVisibleTo this assembly. 
-            if (pattern == null)
-            {
-                throw new ArgumentNullException(nameof(pattern));
-            }
+            Preconditions.CheckNotNull(pattern, nameof(pattern));
             this.pattern = pattern;
             this.validator = validator;
         }

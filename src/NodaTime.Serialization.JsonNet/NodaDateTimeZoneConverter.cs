@@ -30,11 +30,9 @@ namespace NodaTime.Serialization.JsonNet
         /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
         protected override DateTimeZone ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            if (reader.TokenType != JsonToken.String)
-            {
-                throw new InvalidNodaDataException(
-                    $"Unexpected token parsing instant. Expected String, got {reader.TokenType}.");
-            }
+            Preconditions.CheckData(reader.TokenType == JsonToken.String,
+                "Unexpected token parsing instant. Expected String, got {0}.",
+                reader.TokenType);
 
             var timeZoneId = reader.Value.ToString();
             return provider[timeZoneId];
