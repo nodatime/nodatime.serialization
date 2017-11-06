@@ -20,7 +20,7 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         /// <param name="reader">The JSON reader to fetch data from.</param>
         /// <param name="serializer">The serializer for embedded serialization.</param>
-        /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
+        /// <returns>The <see cref="Interval"/> identified in the JSON.</returns>
         protected override Interval ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
             Instant? startInstant = null;
