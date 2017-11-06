@@ -97,6 +97,38 @@ namespace NodaTime.Serialization.JsonNet
             return serializer;
         }
 
+        /// <summary>
+        /// Configures the given serializer settings to use <see cref="NodaConverters.IsoDateIntervalConverter"/>.
+        /// Any other converters which can convert <see cref="DateInterval"/> are removed from the serializer.
+        /// </summary>
+        /// <param name="settings">The existing serializer settings to add Noda Time converters to.</param>
+        /// <returns>The original <paramref name="settings"/> value, for further chaining.</returns>
+        public static JsonSerializerSettings WithIsoDateIntervalConverter(this JsonSerializerSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+            ReplaceExistingConverters<DateInterval>(settings.Converters, NodaConverters.IsoDateIntervalConverter);
+            return settings;
+        }
+
+        /// <summary>
+        /// Configures the given serializer to use <see cref="NodaConverters.IsoDateIntervalConverter"/>.
+        /// Any other converters which can convert <see cref="DateInterval"/> are removed from the serializer.
+        /// </summary>
+        /// <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+        /// <returns>The original <paramref name="serializer"/> value, for further chaining.</returns>
+        public static JsonSerializer WithIsoDateIntervalConverter(this JsonSerializer serializer)
+        {
+            if (serializer == null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+            ReplaceExistingConverters<DateInterval>(serializer.Converters, NodaConverters.IsoDateIntervalConverter);
+            return serializer;
+        }
+
         private static void AddDefaultConverters(IList<JsonConverter> converters, IDateTimeZoneProvider provider)
         {
             converters.Add(NodaConverters.InstantConverter);
@@ -104,6 +136,7 @@ namespace NodaTime.Serialization.JsonNet
             converters.Add(NodaConverters.LocalDateConverter);
             converters.Add(NodaConverters.LocalDateTimeConverter);
             converters.Add(NodaConverters.LocalTimeConverter);
+            converters.Add(NodaConverters.DateIntervalConverter);
             converters.Add(NodaConverters.OffsetConverter);
             converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
             converters.Add(NodaConverters.DurationConverter);
