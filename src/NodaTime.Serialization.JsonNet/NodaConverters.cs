@@ -54,6 +54,17 @@ namespace NodaTime.Serialization.JsonNet
             = new NodaIsoIntervalConverter();
 
         /// <summary>
+        /// Converter for date intervals. This must be used in a serializer which also has a local date converter.
+        /// </summary>
+        public static JsonConverter DateIntervalConverter { get; } = new NodaDateIntervalConverter();
+
+        /// <summary>
+        /// Converter for date intervals using ISO-8601 format, as defined by <see cref="LocalDatePattern.Iso"/>.
+        /// </summary>
+        public static JsonConverter IsoDateIntervalConverter { get; }
+            = new NodaIsoDateIntervalConverter();
+
+        /// <summary>
         /// Converter for offsets.
         /// </summary>
         public static JsonConverter OffsetConverter { get; }

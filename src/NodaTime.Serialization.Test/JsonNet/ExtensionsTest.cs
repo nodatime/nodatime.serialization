@@ -56,6 +56,52 @@ namespace NodaTime.Serialization.Test.JsonNet
                 JsonConvert.SerializeObject(interval, configuredSettings));
         }
 
+        [Test]
+        public void Serializer_ConfigureForNodaTime_DefaultDateInterval()
+        {
+            var configuredSerializer = new JsonSerializer().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+            var explicitSerializer = new JsonSerializer
+            {
+                Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter }
+            };
+            var interval = new DateInterval(new LocalDate(2001, 2, 3), new LocalDate(2004, 5, 6));
+            Assert.AreEqual(Serialize(interval, explicitSerializer),
+                Serialize(interval, configuredSerializer));
+        }
+
+        [Test]
+        public void Serializer_ConfigureForNodaTime_WithIsoDateIntervalConverter()
+        {
+            var configuredSerializer = new JsonSerializer().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb).WithIsoDateIntervalConverter();
+            var explicitSerializer = new JsonSerializer { Converters = { NodaConverters.IsoDateIntervalConverter } };
+            var interval = new DateInterval(new LocalDate(2001, 2, 3), new LocalDate(2004, 5, 6));
+            Assert.AreEqual(Serialize(interval, explicitSerializer),
+                Serialize(interval, configuredSerializer));
+        }
+
+        [Test]
+        public void Settings_ConfigureForNodaTime_DefaultDateInterval()
+        {
+            var configuredSettings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+            var explicitSettings = new JsonSerializerSettings
+            {
+                Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter }
+            };
+            var interval = new DateInterval(new LocalDate(2001, 2, 3), new LocalDate(2004, 5, 6));
+            Assert.AreEqual(JsonConvert.SerializeObject(interval, explicitSettings),
+                JsonConvert.SerializeObject(interval, configuredSettings));
+        }
+
+        [Test]
+        public void Settings_ConfigureForNodaTime_WithIsoDateIntervalConverter()
+        {
+            var configuredSettings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb).WithIsoDateIntervalConverter();
+            var explicitSettings = new JsonSerializerSettings { Converters = { NodaConverters.IsoDateIntervalConverter } };
+            var interval = new DateInterval(new LocalDate(2001, 2, 3), new LocalDate(2004, 5, 6));
+            Assert.AreEqual(JsonConvert.SerializeObject(interval, explicitSettings),
+                JsonConvert.SerializeObject(interval, configuredSettings));
+        }
+
         private static string Serialize<T>(T value, JsonSerializer serializer)
         {
             var writer = new StringWriter();
