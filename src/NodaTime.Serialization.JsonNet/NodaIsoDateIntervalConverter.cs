@@ -47,7 +47,7 @@ namespace NodaTime.Serialization.JsonNet
         }
 
         /// <summary>
-        /// Serializes the date interval as start/end instants.
+        /// Serializes the date interval as start/end dates.
         /// </summary>
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The date interval to serialize</param>
