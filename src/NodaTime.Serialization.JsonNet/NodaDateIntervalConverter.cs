@@ -10,7 +10,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="DateInterval"/> using a compound representation. The start and
     /// end aspects of the date interval are represented with separate properties, each parsed and formatted
-    /// by the <see cref="DateInstant"/> converter for the serializer provided.
+    /// by the <see cref="LocalDate"/> converter for the serializer provided.
     /// </summary>   
     internal sealed class NodaDateIntervalConverter : NodaConverterBase<DateInterval>
     {
