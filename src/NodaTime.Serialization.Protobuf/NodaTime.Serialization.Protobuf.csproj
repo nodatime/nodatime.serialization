@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and Google.Protobuf</Description>
     <AssemblyTitle>Noda Time</AssemblyTitle>
-    <VersionPrefix>1.0.0-alpha01</VersionPrefix>
+    <Version>1.0.0-alpha01</Version>
     <Authors>Jon Skeet</Authors>
     <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -21,5 +21,6 @@
     <PackageReference Include="NodaTime" Version="2.0.0" />
     <PackageReference Include="Google.Protobuf" Version="3.3.0" />
     <PackageReference Include="Google.Api.CommonProtos" Version="1.1.0" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
