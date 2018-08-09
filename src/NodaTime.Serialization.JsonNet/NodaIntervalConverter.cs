@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using Newtonsoft.Json;
-using NodaTime.Utility;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -40,12 +39,14 @@ namespace NodaTime.Serialization.JsonNet
                     break;
                 }
 
-                if (propertyName == "Start")
+                var startPropertyName = serializer.ResolvePropertyName(nameof(Interval.Start));
+                if (propertyName == startPropertyName)
                 {
                     startInstant = serializer.Deserialize<Instant>(reader);
                 }
 
-                if (propertyName == "End")
+                var endPropertyName = serializer.ResolvePropertyName(nameof(Interval.End));
+                if (propertyName == endPropertyName)
                 {
                     endInstant = serializer.Deserialize<Instant>(reader);
                 }
@@ -63,14 +64,17 @@ namespace NodaTime.Serialization.JsonNet
         protected override void WriteJsonImpl(JsonWriter writer, Interval value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
+
             if (value.HasStart)
             {
-                writer.WritePropertyName("Start");
+                var startPropertyName = serializer.ResolvePropertyName(nameof(Interval.Start));
+                writer.WritePropertyName(startPropertyName);
                 serializer.Serialize(writer, value.Start);
             }
             if (value.HasEnd)
             {
-                writer.WritePropertyName("End");
+                var endPropertyName = serializer.ResolvePropertyName(nameof(Interval.End));
+                writer.WritePropertyName(endPropertyName);
                 serializer.Serialize(writer, value.End);
             }
             writer.WriteEndObject();

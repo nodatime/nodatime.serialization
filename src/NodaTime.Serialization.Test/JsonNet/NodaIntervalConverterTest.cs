@@ -5,6 +5,7 @@
 using static NodaTime.Serialization.Test.JsonNet.TestHelper;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NodaTime.Serialization.JsonNet;
 using NodaTime.Utility;
 using NUnit.Framework;
@@ -15,6 +16,14 @@ namespace NodaTime.Serialization.Test.JsonNet
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings
         {
+            ContractResolver = new DefaultContractResolver(),
+            Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
+            DateParseHandling = DateParseHandling.None
+        };
+
+        private readonly JsonSerializerSettings settingsCamelCase = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
             Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
             DateParseHandling = DateParseHandling.None
         };
@@ -53,11 +62,41 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void Serialize_InObject_CamelCase()
+        {
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var interval = new Interval(startInstant, endInstant);
+
+            var testObject = new TestObject { Interval = interval };
+
+            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settingsCamelCase);
+
+            string expectedJson = "{\"interval\":{\"start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
         public void Deserialize_InObject()
         {
             string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
 
             var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
+
+            var interval = testObject.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, interval);
+        }
+
+        [Test]
+        public void Deserialize_InObject_CamelCase()
+        {
+            string json = "{\"interval\":{\"start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
 
             var interval = testObject.Interval;
 
