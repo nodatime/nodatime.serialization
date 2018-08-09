@@ -5,6 +5,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Serialization;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -155,6 +156,18 @@ namespace NodaTime.Serialization.JsonNet
                 }
             }
             converters.Add(newConverter);
+        }
+
+        /// <summary>
+        /// Resolves property name according <see cref="DefaultContractResolver.NamingStrategy"/>.
+        /// <para>If serializer is not DefaultContractResolver then original propertyName returns.</para>
+        /// </summary>
+        /// <param name="serializer">The serializer to use name resolve.</param>
+        /// <param name="propertyName">Property name.</param>
+        /// <returns>Resolved propertyName.</returns>
+        internal static string ResolvePropertyName(this JsonSerializer serializer, string propertyName)
+        {
+            return (serializer.ContractResolver as DefaultContractResolver)?.GetResolvedPropertyName(propertyName) ?? propertyName;
         }
     }
 }

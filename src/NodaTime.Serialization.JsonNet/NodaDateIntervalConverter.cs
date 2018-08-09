@@ -38,12 +38,14 @@ namespace NodaTime.Serialization.JsonNet
                     break;
                 }
 
-                if (propertyName == "Start")
+                var startPropertyName = serializer.ResolvePropertyName(nameof(Interval.Start));
+                if (propertyName == startPropertyName)
                 {
                     startLocalDate = serializer.Deserialize<LocalDate>(reader);
                 }
 
-                if (propertyName == "End")
+                var endPropertyName = serializer.ResolvePropertyName(nameof(Interval.End));
+                if (propertyName == endPropertyName)
                 {
                     endLocalDate = serializer.Deserialize<LocalDate>(reader);
                 }
@@ -72,10 +74,12 @@ namespace NodaTime.Serialization.JsonNet
         {
             writer.WriteStartObject();
 
-            writer.WritePropertyName("Start");
+            var startPropertyName = serializer.ResolvePropertyName(nameof(Interval.Start));
+            writer.WritePropertyName(startPropertyName);
             serializer.Serialize(writer, value.Start);
 
-            writer.WritePropertyName("End");
+            var endPropertyName = serializer.ResolvePropertyName(nameof(Interval.End));
+            writer.WritePropertyName(endPropertyName);
             serializer.Serialize(writer, value.End);
 
             writer.WriteEndObject();
