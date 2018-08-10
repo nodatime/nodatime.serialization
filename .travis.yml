@@ -2,11 +2,9 @@
 
 language: csharp
 mono: none
-dotnet: 1.0.1
+dotnet: 2.1.300
 dist: trusty
 
 script:
-  - dotnet restore src/NodaTime.Serialization.JsonNet
-  - dotnet restore src/NodaTime.Serialization.Test
-  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp1.0
-  - dotnet run -p src/NodaTime.Serialization.Test/*.csproj -f netcoreapp1.0
+  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp2.0
+  - dotnet run -p src/NodaTime.Serialization.Test -f netcoreapp2.0
