@@ -2,7 +2,7 @@
 
 language: csharp
 mono: none
-dotnet: 2.1.4
+dotnet: 2.1.300
 dist: trusty
 
 # We need to install the .NET Core 1.0 runtime to run netcoreapp1.0
@@ -16,7 +16,5 @@ addons:
     - dotnet-sharedframework-microsoft.netcore.app-1.0.5
 
 script:
-  - dotnet restore src/NodaTime.Serialization.JsonNet
-  - dotnet restore src/NodaTime.Serialization.Test
   - dotnet build src/NodaTime.Serialization.Test -f netcoreapp1.0
   - dotnet run -p src/NodaTime.Serialization.Test -f netcoreapp1.0
