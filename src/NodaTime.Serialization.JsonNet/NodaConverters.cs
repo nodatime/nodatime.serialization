@@ -78,6 +78,19 @@ namespace NodaTime.Serialization.JsonNet
                 OffsetDateTimePattern.Rfc3339, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
 
         /// <summary>
+        /// Converter for offset dates.
+        /// </summary>
+        public static JsonConverter OffsetDateConverter { get; } =
+            new NodaPatternConverter<OffsetDate>(
+                OffsetDatePattern.GeneralIso, CreateIsoValidator<OffsetDate>(x => x.Calendar));
+
+        /// <summary>
+        /// Converter for offset times.
+        /// </summary>
+        public static JsonConverter OffsetTimeConverter { get; } =
+            new NodaPatternConverter<OffsetTime>(OffsetTimePattern.ExtendedIso);
+
+        /// <summary>
         /// Creates a converter for zoned date/times, using the given time zone provider.
         /// </summary>
         /// <param name="provider">The time zone provider to use when parsing.</param>
