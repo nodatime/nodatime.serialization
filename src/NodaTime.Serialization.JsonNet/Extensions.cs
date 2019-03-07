@@ -143,6 +143,8 @@ namespace NodaTime.Serialization.JsonNet
             converters.Add(NodaConverters.DurationConverter);
             converters.Add(NodaConverters.RoundtripPeriodConverter);
             converters.Add(NodaConverters.OffsetDateTimeConverter);
+            converters.Add(NodaConverters.OffsetDateConverter);
+            converters.Add(NodaConverters.OffsetTimeConverter);
             converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
         }
 

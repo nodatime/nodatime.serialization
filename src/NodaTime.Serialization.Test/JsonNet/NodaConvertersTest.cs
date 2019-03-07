@@ -197,5 +197,21 @@ namespace NodaTime.Serialization.Test.JsonNet
             var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234000\"", NodaConverters.DurationConverter);
             Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
         }
+
+        [Test]
+        public void OffsetDateConverter()
+        {
+            var value = new LocalDate(2012, 1, 2).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
+            string json = "\"2012-01-02-01:30\"";
+            AssertConversions(value, json, NodaConverters.OffsetDateConverter);
+        }
+
+        [Test]
+        public void OffsetTimeConverter()
+        {
+            var value = new LocalTime(3, 4, 5).PlusNanoseconds(123456789).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
+            string json = "\"03:04:05.123456789-01:30\"";
+            AssertConversions(value, json, NodaConverters.OffsetTimeConverter);
+        }
     }
 }
