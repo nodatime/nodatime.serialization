@@ -2,9 +2,9 @@
 
 language: csharp
 mono: none
-dotnet: 2.1.400
-dist: trusty
+dotnet: 2.2
+dist: xenial
 
 script:
-  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp2.0
-  - dotnet run -p src/NodaTime.Serialization.Test -f netcoreapp2.0
+  - dotnet build src/NodaTime.Serialization.Test
+  - dotnet test src/NodaTime.Serialization.Test
