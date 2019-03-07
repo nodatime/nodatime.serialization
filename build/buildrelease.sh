@@ -30,7 +30,7 @@ dotnet build -c Release src/NodaTime.Serialization.Test
 
 # Only test against netcoreapp2.0 now; there's no conditional code here,
 # and the Protobuf project only supports 2.0 anyway.
-dotnet run -c Release -p src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj -f netcoreapp2.0
+dotnet test -c Release src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
 
 mkdir $OUTPUT
 
