@@ -35,7 +35,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         public void Deserialize_TimeZoneNotFound()
         {
             string json = "\"America/DOES_NOT_EXIST\"";
-            Assert.Throws<DateTimeZoneNotFoundException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+            var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+            Assert.IsInstanceOf<DateTimeZoneNotFoundException>(exception.InnerException);
         }
     }
 }
