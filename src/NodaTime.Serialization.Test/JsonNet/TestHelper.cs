@@ -31,7 +31,8 @@ namespace NodaTime.Serialization.Test.JsonNet
 
         internal static void AssertInvalidJson<T>(string json, JsonSerializerSettings settings)
         {
-            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<T>(json, settings));
+            var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<T>(json, settings));
+            Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
         }
     }
 }

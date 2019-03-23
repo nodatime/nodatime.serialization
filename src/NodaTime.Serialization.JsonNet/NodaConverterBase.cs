@@ -71,12 +71,19 @@ namespace NodaTime.Serialization.JsonNet
                 }
             }
 
-            // Delegate to the concrete subclass. At this point we know that we don't want to return null, so we
-            // can ask the subclass to return a T, which we will box. That will be valid even if objectType is
-            // T? because the boxed form of a non-null T? value is just the boxed value itself.
+            try
+            {
+                // Delegate to the concrete subclass. At this point we know that we don't want to return null, so we
+                // can ask the subclass to return a T, which we will box. That will be valid even if objectType is
+                // T? because the boxed form of a non-null T? value is just the boxed value itself.
 
-            // Note that we don't currently pass existingValue down; we could change this if we ever found a use for it.
-            return ReadJsonImpl(reader, serializer);
+                // Note that we don't currently pass existingValue down; we could change this if we ever found a use for it.
+                return ReadJsonImpl(reader, serializer);
+            }
+            catch (Exception ex)
+            {
+                throw new JsonSerializationException($"Cannot convert value to {objectType}", ex);
+            }
         }
 
         /// <summary>
