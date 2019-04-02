@@ -12,7 +12,7 @@
     <SignAssembly>true</SignAssembly>
     <PackageTags>nodatime;json;jsonnet</PackageTags>
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
     <Deterministic>True</Deterministic>
   </PropertyGroup>
