@@ -151,11 +151,11 @@ namespace NodaTime.Serialization.Protobuf
             Preconditions.CheckArgument(year != 0 && month != 0 && day != 0, nameof(date),
                 "Date messages must be fully-specified (no zero values) to convert to LocalDate.");
             Preconditions.CheckArgument(year >= 1 && year <= 9999, nameof(date),
-                "Date.Year must be in the range [1, 9999].");
+                "Date.Year must be in the range [1, 9999]. Actual value: {0}", year);
             Preconditions.CheckArgument(month >= 1 && month <= 12, nameof(date),
-                "Date.Month must be in the range [1, 12].");
+                "Date.Month must be in the range [1, 12]. Actual value: {0}", month);
             Preconditions.CheckArgument(day >= 1 && day <= CalendarSystem.Iso.GetDaysInMonth(year, month), nameof(date),
-                "Date.Day out of range for Month/Year value.");
+                "Date.Day out of range for Year/Month value. Actual value: {0}. Year/month: {1}/{2}", day, year, month);
             return new LocalDate(date.Year, date.Month, date.Day);
         }
     }

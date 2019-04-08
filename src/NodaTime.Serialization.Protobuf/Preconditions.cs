@@ -39,5 +39,14 @@ namespace NodaTime.Serialization.Protobuf
                 throw new ArgumentException(message, parameter);
             }
         }
+
+        internal static void CheckArgument<T1, T2, T3>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2, T3 messageArg3)
+        {
+            if (!expression)
+            {
+                string message = string.Format(messageFormat, messageArg1, messageArg2, messageArg3);
+                throw new ArgumentException(message, parameter);
+            }
+        }
     }
 }
