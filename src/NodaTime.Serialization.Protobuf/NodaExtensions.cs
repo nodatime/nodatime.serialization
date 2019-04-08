@@ -80,22 +80,20 @@ namespace NodaTime.Serialization.Protobuf
         /// </remarks>
         /// <param name="localTime">The local time.</param>
         /// <returns>The Protobuf representation.</returns>
-        public static TimeOfDay ToTimeOfDay(this LocalTime localTime)
-        {
-            return new TimeOfDay
+        public static TimeOfDay ToTimeOfDay(this LocalTime localTime) =>
+            new TimeOfDay
             {
                 Hours = localTime.Hour,
                 Minutes = localTime.Minute,
                 Seconds = localTime.Second,
                 Nanos = localTime.NanosecondOfSecond
             };
-        }
 
         /// <summary>
-        /// Converts a Protobuf <see cref="ProtobufDayOfWeek"/> to a Noda Time <see cref="IsoDayOfWeek"/>.
+        /// Converts a Noda Time <see cref="IsoDayOfWeek"/> to a Protobuf <see cref="ProtobufDayOfWeek"/>.
         /// </summary>
         /// <remarks>
-        /// The <see cref="ProtobufDayOfWeek.Unspecified"/> value maps to <see cref="IsoDayOfWeek.None"/>.
+        /// The <see cref="IsoDayOfWeek.None"/> value maps to <see cref="ProtobufDayOfWeek.Unspecified"/>.
         /// </remarks>
         /// <param name="isoDayOfWeek">The ISO day-of-week value to convert.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="isoDayOfWeek"/> is neither None nor
@@ -111,6 +109,6 @@ namespace NodaTime.Serialization.Protobuf
             }
             // Handily, Noda Time and Protobuf use the same numbers.
             return (ProtobufDayOfWeek) isoDayOfWeek;
-        }   
+        }
     }
 }
