@@ -110,5 +110,25 @@ namespace NodaTime.Serialization.Protobuf
             // Handily, Noda Time and Protobuf use the same numbers.
             return (ProtobufDayOfWeek) isoDayOfWeek;
         }
+
+        /// <summary>
+        /// Converts a Noda Time <see cref="LocalDate"/> to a Protobuf <see cref="Date"/>.
+        /// </summary>
+        /// <remarks>
+        /// Only dates in the ISO calendar can be converted, and only those in the year range of 1-9999.
+        /// </remarks>
+        /// <param name="date">The date to convert.</param>
+        /// <returns>The Protobuf representation.</returns>
+        public static Date ToDate(this LocalDate date)
+        {
+            Preconditions.CheckArgument(date.Calendar == CalendarSystem.Iso, nameof(date),
+                "Non-ISO dates cannot be converted to Protobuf Date messages");
+            if (date.Year < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(date),
+                    "Dates earlier than 1AD cannot be converted to Protobuf Date messages");
+            }
+            return new Date { Year = date.Year, Month = date.Month, Day = date.Day };
+        }
     }
 }

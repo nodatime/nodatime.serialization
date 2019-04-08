@@ -14,6 +14,14 @@ namespace NodaTime.Serialization.Protobuf
         internal static T CheckNotNull<T>(T argument, string paramName) where T : class
             => argument ?? throw new ArgumentNullException(paramName);
 
+        internal static void CheckArgument(bool expression, string parameter, string message)
+        {
+            if (!expression)
+            {
+                throw new ArgumentException(message, parameter);
+            }
+        }
+
         internal static void CheckArgument<T>(bool expression, string parameter, string messageFormat, T messageArg)
         {
             if (!expression)
