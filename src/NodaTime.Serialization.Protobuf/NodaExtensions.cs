@@ -122,11 +122,11 @@ namespace NodaTime.Serialization.Protobuf
         public static Date ToDate(this LocalDate date)
         {
             Preconditions.CheckArgument(date.Calendar == CalendarSystem.Iso, nameof(date),
-                "Non-ISO dates cannot be converted to Protobuf Date messages");
+                "Non-ISO dates cannot be converted to Protobuf Date messages. Actual calendar ID: {0}", date.Calendar.Id);
             if (date.Year < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(date),
-                    "Dates earlier than 1AD cannot be converted to Protobuf Date messages");
+                    $"Dates earlier than 1AD cannot be converted to Protobuf Date messages. Year: {date.Year}");
             }
             return new Date { Year = date.Year, Month = date.Month, Day = date.Day };
         }
