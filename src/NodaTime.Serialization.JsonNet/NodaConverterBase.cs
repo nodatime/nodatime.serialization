@@ -16,6 +16,13 @@ namespace NodaTime.Serialization.JsonNet
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public abstract class NodaConverterBase<T> : JsonConverter
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        protected NodaConverterBase()
+        {
+        }
+
         // For value types and sealed classes, we can optimize and not call IsAssignableFrom.
         private static readonly bool CheckAssignableFrom =
             !(typeof(T).GetTypeInfo().IsValueType || (typeof(T).GetTypeInfo().IsClass && typeof(T).GetTypeInfo().IsSealed));
