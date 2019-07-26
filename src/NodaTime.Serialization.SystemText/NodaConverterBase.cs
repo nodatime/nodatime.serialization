@@ -12,7 +12,7 @@ using NodaTime.Utility;
 namespace NodaTime.Serialization.SystemText
 {
     /// <summary>
-    /// Base class for all the System.Text.NET converters which handle value types (which is most of them).
+    /// Base class for all the System.Text.Json converters which handle value types (which is most of them).
     /// This deals handles all the boilerplate code dealing with nullity.
     /// </summary>
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
@@ -32,12 +32,6 @@ namespace NodaTime.Serialization.SystemText
         private static readonly Type NullableT = typeof(T).GetTypeInfo().IsValueType
             ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
 
-        // TODO: It's not clear whether we *should* support inheritance here. The Json.NET docs
-        // aren't clear on when this is used - is it for reading or writing? If it's for both, that's
-        // a problem: our "writer" may be okay for subclasses, but that doesn't mean the "reader" is.
-        // This may well only be an issue for DateTimeZone, as everything else uses a sealed type (e.g. Period)
-        // or a value type.
-
         /// <summary>
         /// Returns whether or not this converter supports the given type.
         /// </summary>
@@ -51,10 +45,9 @@ namespace NodaTime.Serialization.SystemText
         /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
         /// </summary>
-        /// <param name="reader">The Json.NET reader to read data from.</param>
+        /// <param name="reader">The json reader to read data from.</param>
         /// <param name="objectType">The type to convert the JSON to.</param>
-        /// <param name="existingValue">An existing value; ignored by this converter.</param>
-        /// <param name="serializer">A serializer to use for any embedded deserialization.</param>
+        /// <param name="options">A serializer options to use for any embedded deserialization.</param>
         /// <exception cref="InvalidNodaDataException">The JSON was invalid for this converter.</exception>
         /// <returns>The deserialized value.</returns>
         public override T Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
@@ -100,7 +93,7 @@ namespace NodaTime.Serialization.SystemText
         /// a value of type T.
         /// </summary>
         /// <param name="reader">The JSON reader to pull data from</param>
-        /// <param name="serializer">The serializer to use for nested serialization</param>
+        /// <param name="options">The serializer options to use for nested serialization</param>
         /// <returns>The deserialized value of type T.</returns>
         protected abstract T ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options);
 
@@ -109,7 +102,7 @@ namespace NodaTime.Serialization.SystemText
         /// </summary>
         /// <param name="writer">The writer to write the JSON to.</param>
         /// <param name="value">The value to write.</param>
-        /// <param name="serializer">The serializer to use for any embedded serialization.</param>
+        /// <param name="options">The serializer options to use for any embedded serialization.</param>
         public override void Write(Utf8JsonWriter writer,
             T value, JsonSerializerOptions options)
         {
@@ -124,7 +117,7 @@ namespace NodaTime.Serialization.SystemText
         /// </summary>
         /// <param name="writer">The writer to write JSON data to</param>
         /// <param name="value">The value to serializer</param>
-        /// <param name="serializer">The serializer to use for nested serialization</param>
+        /// <param name="options">The serializer options to use for nested serialization</param>
         protected abstract void WriteJsonImpl(Utf8JsonWriter writer,
             T value, JsonSerializerOptions options);
     }

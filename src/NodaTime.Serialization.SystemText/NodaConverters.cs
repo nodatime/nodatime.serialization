@@ -1,4 +1,4 @@
-// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.SystemText
         /// <summary>
         /// Converter for local dates, using the ISO-8601 date pattern.
         /// </summary>
-        public static JsonConverter LocalDateConverter { get; }
+        public static JsonConverter<LocalDate> LocalDateConverter { get; }
             = new NodaPatternConverter<LocalDate>(
                 LocalDatePattern.Iso, CreateIsoValidator<LocalDate>(x => x.Calendar));
 

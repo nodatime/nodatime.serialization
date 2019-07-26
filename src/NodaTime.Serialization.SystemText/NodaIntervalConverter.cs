@@ -1,4 +1,4 @@
-// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace NodaTime.Serialization.SystemText
 {
     /// <summary>
-    /// Json.NET converter for <see cref="Interval"/> using a compound representation. The start and
+    /// System.Text.Json converter for <see cref="Interval"/> using a compound representation. The start and
     /// end aspects of the interval are represented with separate properties, each parsed and formatted
     /// by the <see cref="Instant"/> converter for the serializer provided.
     /// </summary>
@@ -18,7 +18,7 @@ namespace NodaTime.Serialization.SystemText
         /// using the given serializer.
         /// </summary>
         /// <param name="reader">The JSON reader to fetch data from.</param>
-        /// <param name="serializer">The serializer for embedded serialization.</param>
+        /// <param name="options">The serializer options for embedded serialization.</param>
         /// <returns>The <see cref="Interval"/> identified in the JSON.</returns>
         protected override Interval ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
@@ -60,7 +60,7 @@ namespace NodaTime.Serialization.SystemText
         /// </summary>
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The interval to serialize</param>
-        /// <param name="options">The serializer for embedded serialization.</param>
+        /// <param name="options">The serializer options for embedded serialization.</param>
         protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
