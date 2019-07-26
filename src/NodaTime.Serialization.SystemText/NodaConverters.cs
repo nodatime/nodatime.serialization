@@ -105,7 +105,7 @@ namespace NodaTime.Serialization.SystemText
         /// </summary>
         /// <param name="provider">The time zone provider to use when parsing.</param>
         /// <returns>A converter to handle <see cref="DateTimeZone"/>.</returns>
-        public static JsonConverter CreateDateTimeZoneConverter(IDateTimeZoneProvider provider) =>
+        public static JsonConverter<DateTimeZone> CreateDateTimeZoneConverter(IDateTimeZoneProvider provider) =>
             new NodaDateTimeZoneConverter(provider);
 
         /// <summary>

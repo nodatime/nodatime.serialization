@@ -1,13 +1,12 @@
-// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
 using NodaTime.Serialization.SystemText;
 using NUnit.Framework;
-using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -37,8 +36,12 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);
             var instant = Instant.FromDateTimeUtc(dateTime);
-            var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
-            var jsonInstant = JsonConvert.SerializeObject(instant, Formatting.None, NodaConverters.InstantConverter);
+            var jsonDateTime = JsonSerializer.Serialize(dateTime);
+            var jsonInstant = JsonSerializer.Serialize(instant, new JsonSerializerOptions
+            {
+                Converters = {NodaConverters.InstantConverter},
+                WriteIndented = false
+            });
             Assert.AreEqual(jsonDateTime, jsonInstant);
         }
 
@@ -54,8 +57,13 @@ namespace NodaTime.Serialization.Test.SystemText
         public void LocalDateConverter_SerializeNonIso_Throws()
         {
             var localDate = new LocalDate(2012, 1, 2, CalendarSystem.Coptic);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Converters = { NodaConverters.LocalDateConverter }
+            };
 
-            Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDate, Formatting.None, NodaConverters.LocalDateConverter));
+            Assert.Throws<ArgumentException>(() => JsonSerializer.Serialize(localDate, options));
         }
 
         [Test]
@@ -72,8 +80,12 @@ namespace NodaTime.Serialization.Test.SystemText
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, 6, DateTimeKind.Unspecified);
             var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, CalendarSystem.Iso);
 
-            var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
-            var jsonLocalDateTime = JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter);
+            var jsonDateTime = JsonSerializer.Serialize(dateTime);
+            var jsonLocalDateTime = JsonSerializer.Serialize(localDateTime, new JsonSerializerOptions
+            {
+                Converters = {NodaConverters.LocalDateTimeConverter},
+                WriteIndented = false
+            });
 
             Assert.AreEqual(jsonDateTime, jsonLocalDateTime);
         }
@@ -83,7 +95,11 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, CalendarSystem.Coptic);
 
-            Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter));
+            Assert.Throws<ArgumentException>(() => JsonSerializer.Serialize(localDateTime, new JsonSerializerOptions
+            {
+                Converters = {NodaConverters.LocalDateTimeConverter},
+                WriteIndented = false
+            }));
         }
 
         [Test]
@@ -107,7 +123,11 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             // Can't use AssertConversions here, as it doesn't round-trip
             var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
-            var json = JsonConvert.SerializeObject(period, Formatting.None, NodaConverters.NormalizingIsoPeriodConverter);
+            var json = JsonSerializer.Serialize(period, new JsonSerializerOptions
+            {
+                Converters = {NodaConverters.NormalizingIsoPeriodConverter},
+                WriteIndented = false
+            });
             string expectedJson = "\"P2DT4H30M\"";
             Assert.AreEqual(expectedJson, json);
         }
@@ -193,7 +213,7 @@ namespace NodaTime.Serialization.Test.SystemText
         [Test]
         public void Duration_ParsePartialFractionalSecondsWithTrailingZeroes()
         {
-            var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234000\"", NodaConverters.DurationConverter);
+            var parsed = JsonSerializer.Deserialize<Duration>("\"25:10:00.1234000\"", new JsonSerializerOptions{Converters = {NodaConverters.DurationConverter }});
             Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
         }
 

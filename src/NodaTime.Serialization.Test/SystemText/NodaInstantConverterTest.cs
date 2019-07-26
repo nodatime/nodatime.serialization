@@ -1,10 +1,9 @@
-// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
 using NodaTime.Serialization.SystemText;
 using NUnit.Framework;
 
@@ -12,17 +11,16 @@ namespace NodaTime.Serialization.Test.SystemText
 {
     public class NodaInstantConverterTest
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             Converters = { NodaConverters.InstantConverter },
-            DateParseHandling = DateParseHandling.None
         };
 
         [Test]
         public void Serialize_NonNullableType()
         {
             var instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var json = JsonConvert.SerializeObject(instant, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(instant, options);
             string expectedJson = "\"2012-01-02T03:04:05Z\"";
             Assert.AreEqual(expectedJson, json);
         }
@@ -31,7 +29,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void Serialize_NullableType_NonNullValue()
         {
             Instant? instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var json = JsonConvert.SerializeObject(instant, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(instant, options);
             string expectedJson = "\"2012-01-02T03:04:05Z\"";
             Assert.AreEqual(expectedJson, json);
         }
@@ -40,7 +38,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void Serialize_NullableType_NullValue()
         {
             Instant? instant = null;
-            var json = JsonConvert.SerializeObject(instant, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(instant, options);
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
@@ -49,7 +47,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void Deserialize_ToNonNullableType()
         {
             string json = "\"2012-01-02T03:04:05Z\"";
-            var instant = JsonConvert.DeserializeObject<Instant>(json, settings);
+            var instant = JsonSerializer.Deserialize<Instant>(json, options);
             var expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             Assert.AreEqual(expectedInstant, instant);
         }
@@ -58,7 +56,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void Deserialize_ToNullableType_NonNullValue()
         {
             string json = "\"2012-01-02T03:04:05Z\"";
-            var instant = JsonConvert.DeserializeObject<Instant?>(json, settings);
+            var instant = JsonSerializer.Deserialize<Instant?>(json, options);
             Instant? expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             Assert.AreEqual(expectedInstant, instant);
         }
@@ -67,7 +65,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void Deserialize_ToNullableType_NullValue()
         {
             string json = "null";
-            var instant = JsonConvert.DeserializeObject<Instant?>(json, settings);
+            var instant = JsonSerializer.Deserialize<Instant?>(json, options);
             Assert.IsNull(instant);
         }
 
@@ -76,8 +74,8 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);
             var instant = Instant.FromDateTimeUtc(dateTime);
-            var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
-            var jsonInstant = JsonConvert.SerializeObject(instant, Formatting.None, settings);
+            var jsonDateTime = JsonSerializer.Serialize(instant, options);
+            var jsonInstant = JsonSerializer.Serialize(instant, options);
             Assert.AreEqual(jsonDateTime, jsonInstant);
         }
     }
