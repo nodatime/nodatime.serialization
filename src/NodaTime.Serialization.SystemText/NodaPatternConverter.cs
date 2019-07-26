@@ -1,3 +1,7 @@
+// Copyright 2019 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -5,33 +9,55 @@ using NodaTime.Text;
 
 namespace NodaTime.Serialization.SystemText
 {
-    public sealed class NodaPatternConverter<T> : JsonConverter<T>
+    public sealed class NodaPatternConverter<T> : NodaConverterBase<T>
     {
         private readonly IPattern<T> pattern;
         private readonly Action<T> validator;
 
-        public NodaPatternConverter(IPattern<T> pattern, Action<T> validator = null)
+        /// <summary>
+        /// Creates a new instance with a pattern and no validator.
+        /// </summary>
+        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
         {
+        }
+
+        /// <summary>
+        /// Creates a new instance with a pattern and an optional validator. The validator will be called before each
+        /// value is written, and may throw an exception to indicate that the value cannot be serialized.
+        /// </summary>
+        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
+        /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)
+        {
+            Preconditions.CheckNotNull(pattern, nameof(pattern));
             this.pattern = pattern;
             this.validator = validator;
         }
 
-        public void Read(ref Utf8JsonReader reader,
-            Type type, JsonSerializerOptions options,
-            out T value)
-        {
-            string text = reader.GetString();
-            value = pattern.Parse(text).Value;
-        }
+        /// <summary>
+        /// Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
+        /// a value of type T.
+        /// </summary>
+        /// <param name="reader">The JSON reader to pull data from</param>
+        /// <param name="options">The serializer options to use for nested serialization</param>
+        /// <returns>The deserialized value of type T.</returns>
 
-        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        protected override T ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             string text = reader.GetString();
             return pattern.Parse(text).Value;
         }
 
-        public override void Write(Utf8JsonWriter writer,
-            T value, JsonSerializerOptions options)
+        /// <summary>
+        /// Writes the formatted value to the writer.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON data to</param>
+        /// <param name="value">The value to serializer</param>
+        /// <param name="options">The serializer options to use for nested serialization</param>
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             validator?.Invoke(value);
             writer.WriteStringValue(pattern.Format(value));

@@ -1,4 +1,4 @@
-﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -13,6 +13,13 @@ namespace NodaTime.Serialization.SystemText
     /// </summary>
     internal sealed class NodaIsoIntervalConverter : NodaConverterBase<Interval>
     {
+        /// <summary>
+        /// Reads Start and End properties for the start and end of an interval, converting them to instants
+        /// using the given serializer.
+        /// </summary>
+        /// <param name="reader">The JSON reader to fetch data from.</param>
+        /// <param name="options">The serializer options for embedded serialization.</param>
+        /// <returns>The <see cref="Interval"/> identified in the JSON.</returns>
         protected override Interval ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.String)
@@ -41,7 +48,7 @@ namespace NodaTime.Serialization.SystemText
         /// </summary>
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The interval to serialize</param>
-        /// <param name="serializer">The serializer for embedded serialization.</param>
+        /// <param name="options">The serializer options for embedded serialization.</param>
         protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options)
         {
             var pattern = InstantPattern.ExtendedIso;
