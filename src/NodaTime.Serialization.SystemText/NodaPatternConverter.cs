@@ -4,11 +4,15 @@
 
 using System;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using NodaTime.Text;
 
 namespace NodaTime.Serialization.SystemText
 {
+    /// <summary>
+    /// A JSON converter for types which can be represented by a single string value, parsed or formatted
+    /// from an <see cref="IPattern{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public sealed class NodaPatternConverter<T> : NodaConverterBase<T>
     {
         private readonly IPattern<T> pattern;
