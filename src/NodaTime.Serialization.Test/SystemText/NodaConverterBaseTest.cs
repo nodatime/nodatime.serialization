@@ -36,7 +36,7 @@ namespace NodaTime.Serialization.Test.SystemText
                 Converters = { converter }
             };
 
-            JsonSerializer.Serialize(null, options);
+            JsonSerializer.Serialize((object)null, options);
         }
 
         [Test]
@@ -50,7 +50,6 @@ namespace NodaTime.Serialization.Test.SystemText
             };
 
             Assert.IsNull(JsonSerializer.Deserialize<int?>("null", options));
-            Assert.IsNull(JsonSerializer.Deserialize<int?>("\"\"", options));
         }
 
         [Test]
@@ -64,7 +63,6 @@ namespace NodaTime.Serialization.Test.SystemText
             };
 
             Assert.IsNull(JsonSerializer.Deserialize<string>("null", options));
-            Assert.IsNull(JsonSerializer.Deserialize<string>("\"\"", options));
         }
 
         [Test]
@@ -90,8 +88,8 @@ namespace NodaTime.Serialization.Test.SystemText
                 Converters = { converter }
             };
 
-            Assert.Throws<InvalidNodaDataException>(() => JsonSerializer.Deserialize<int>("null", options));
-            Assert.Throws<InvalidNodaDataException>(() => JsonSerializer.Deserialize<int>("\"\"", options));
+            Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("null", options));
+            Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("\"\"", options));
         }
 
         [Test]
@@ -105,31 +103,6 @@ namespace NodaTime.Serialization.Test.SystemText
             };
 
             Assert.AreEqual(5, JsonSerializer.Deserialize<int>("\"5\"", options));
-        }
-
-        [Test]
-        public void CanConvert_ValidValues()
-        {
-            var converter = new TestConverter();
-
-            Assert.IsTrue(converter.CanConvert(typeof(int)));
-            Assert.IsTrue(converter.CanConvert(typeof(int?)));
-        }
-
-        [Test]
-        public void CanConvert_InvalidValues()
-        {
-            var converter = new TestConverter();
-
-            Assert.IsFalse(converter.CanConvert(typeof(uint)));
-        }
-
-        [Test]
-        public void CanConvert_Inheritance()
-        {
-            var converter = new TestInheritanceConverter();
-
-            Assert.IsTrue(converter.CanConvert(typeof(MemoryStream)));
         }
 
         private class TestConverter : NodaConverterBase<int>
@@ -155,22 +128,6 @@ namespace NodaTime.Serialization.Test.SystemText
             protected override void WriteJsonImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
             {
                 writer.WriteStringValue(value);
-            }
-        }
-
-        /// <summary>
-        /// Just use for CanConvert testing...
-        /// </summary>
-        private class TestInheritanceConverter : NodaConverterBase<Stream>
-        {
-            protected override Stream ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override void WriteJsonImpl(Utf8JsonWriter writer, Stream value, JsonSerializerOptions options)
-            {
-                throw new NotImplementedException();
             }
         }
     }
