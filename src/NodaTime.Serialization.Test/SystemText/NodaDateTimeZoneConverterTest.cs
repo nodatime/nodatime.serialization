@@ -47,7 +47,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "\"America/DOES_NOT_EXIST\"";
             var exception =
-                Assert.Throws<SerializationException>(() =>
+                Assert.Throws<JsonException>(() =>
                     JsonSerializer.Deserialize<DateTimeZone>(json, new JsonSerializerOptions
                     {
                         Converters = {converter}

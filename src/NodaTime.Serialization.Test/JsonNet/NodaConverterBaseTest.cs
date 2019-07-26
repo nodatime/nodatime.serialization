@@ -35,7 +35,6 @@ namespace NodaTime.Serialization.Test.JsonNet
             var converter = new TestConverter();
 
             Assert.IsNull(JsonConvert.DeserializeObject<int?>("null", converter));
-            Assert.IsNull(JsonConvert.DeserializeObject<int?>("\"\"", converter));
         }
 
         [Test]
@@ -44,7 +43,6 @@ namespace NodaTime.Serialization.Test.JsonNet
             var converter = new TestStringConverter();
 
             Assert.IsNull(JsonConvert.DeserializeObject<string>("null", converter));
-            Assert.IsNull(JsonConvert.DeserializeObject<string>("\"\"", converter));
         }
 
         [Test]
@@ -61,7 +59,6 @@ namespace NodaTime.Serialization.Test.JsonNet
             var converter = new TestConverter();
 
             Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<int>("null", converter));
-            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<int>("\"\"", converter));
         }
 
         [Test]
