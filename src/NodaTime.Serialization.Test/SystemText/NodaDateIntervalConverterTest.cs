@@ -1,28 +1,25 @@
-// Copyright 2017 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
 using NodaTime.Serialization.SystemText;
 using NUnit.Framework;
-using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
     public class NodaDateIntervalConverterTest
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
-            DateParseHandling = DateParseHandling.None
         };
 
-        private readonly JsonSerializerSettings settingsCamelCase = new JsonSerializerSettings
+        private readonly JsonSerializerOptions optionsCamelCase = new JsonSerializerOptions
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
-            DateParseHandling = DateParseHandling.None
         };
 
         [Test]
@@ -31,7 +28,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var startLocalDate = new LocalDate(2012, 1, 2);
             var endLocalDate = new LocalDate(2013, 6, 7);
             var dateInterval = new DateInterval(startLocalDate, endLocalDate);
-            AssertConversions(dateInterval, "{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}", settings);
+            AssertConversions(dateInterval, "{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}", options);
         }
 
         [Test]
@@ -40,7 +37,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var startLocalDate = new LocalDate(2012, 1, 2);
             var endLocalDate = new LocalDate(2013, 6, 7);
             var dateInterval = new DateInterval(startLocalDate, endLocalDate);
-            AssertConversions(dateInterval, "{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}", settingsCamelCase);
+            AssertConversions(dateInterval, "{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}", optionsCamelCase);
         }
 
         [Test]
@@ -52,7 +49,7 @@ namespace NodaTime.Serialization.Test.SystemText
 
             var testObject = new TestObject { Interval = dateInterval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(testObject, options);
 
             string expectedJson = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
             Assert.AreEqual(expectedJson, json);
@@ -67,7 +64,7 @@ namespace NodaTime.Serialization.Test.SystemText
 
             var testObject = new TestObject { Interval = dateInterval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settingsCamelCase);
+            var json = JsonSerializer.Serialize(testObject, optionsCamelCase);
 
             string expectedJson = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
             Assert.AreEqual(expectedJson, json);
@@ -78,7 +75,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, options);
 
             var interval = testObject.Interval;
 
@@ -93,7 +90,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCase);
 
             var interval = testObject.Interval;
 

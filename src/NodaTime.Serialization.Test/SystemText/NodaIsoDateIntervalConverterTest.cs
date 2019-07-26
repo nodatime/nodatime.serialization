@@ -1,11 +1,11 @@
-// Copyright 2017 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Newtonsoft.Json;
+using System.Text.Json;
 using NodaTime.Serialization.SystemText;
 using NUnit.Framework;
-using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -14,10 +14,9 @@ namespace NodaTime.Serialization.Test.SystemText
     /// </summary>
     public class NodaIsoDateIntervalConverterTest
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             Converters = { NodaConverters.IsoDateIntervalConverter, NodaConverters.LocalDateConverter },
-            DateParseHandling = DateParseHandling.None
         };
 
         [Test]
@@ -26,14 +25,14 @@ namespace NodaTime.Serialization.Test.SystemText
             var startLocalDate = new LocalDate(2012, 1, 2);
             var endLocalDate = new LocalDate(2013, 6, 7);
             var dateInterval = new DateInterval(startLocalDate, endLocalDate);
-            AssertConversions(dateInterval, "\"2012-01-02/2013-06-07\"", settings);
+            AssertConversions(dateInterval, "\"2012-01-02/2013-06-07\"", options);
         }
 
         [Test]
         [TestCase("\"2012-01-022013-06-07\"")]
         public void InvalidJson(string json)
         {
-            AssertInvalidJson<DateInterval>(json, settings);
+            AssertInvalidJson<DateInterval>(json, options);
         }
 
         [Test]
@@ -45,7 +44,7 @@ namespace NodaTime.Serialization.Test.SystemText
 
             var testObject = new TestObject { Interval = dateInterval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(testObject, options);
 
             string expectedJson = "{\"Interval\":\"2012-01-02/2013-06-07\"}";
             Assert.AreEqual(expectedJson, json);
@@ -56,7 +55,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"Interval\":\"2012-01-02/2013-06-07\"}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, options);
 
             var interval = testObject.Interval;
 

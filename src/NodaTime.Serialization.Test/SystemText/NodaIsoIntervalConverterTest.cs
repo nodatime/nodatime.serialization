@@ -1,11 +1,11 @@
-// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Copyright 2019 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Newtonsoft.Json;
+using System.Text.Json;
 using NodaTime.Serialization.SystemText;
 using NUnit.Framework;
-using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -14,10 +14,9 @@ namespace NodaTime.Serialization.Test.SystemText
     /// </summary>
     public class NodaIsoIntervalConverterTest
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
+        private readonly JsonSerializerOptions settings = new JsonSerializerOptions
         {
-            Converters = { NodaConverters.IsoIntervalConverter },
-            DateParseHandling = DateParseHandling.None
+            Converters = { NodaConverters.IsoIntervalConverter }
         };
 
         [Test]
@@ -44,7 +43,7 @@ namespace NodaTime.Serialization.Test.SystemText
             // Comma is deliberate, to show that we can parse a comma decimal separator too.
             string json = "\"2012-01-02T03:04:05.670Z/2013-06-07T08:09:10,1234567Z\"";
 
-            var interval = JsonConvert.DeserializeObject<Interval>(json, settings);
+            var interval = JsonSerializer.Deserialize<Interval>(json, settings);
 
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5) + Duration.FromMilliseconds(670);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromTicks(1234567);
@@ -68,7 +67,7 @@ namespace NodaTime.Serialization.Test.SystemText
 
             var testObject = new TestObject { Interval = interval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
+            var json = JsonSerializer.Serialize(testObject, settings);
 
             string expectedJson = "{\"Interval\":\"2012-01-02T03:04:05Z/2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
@@ -79,7 +78,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"Interval\":\"2012-01-02T03:04:05Z/2013-06-07T08:09:10Z\"}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, settings);
 
             var interval = testObject.Interval;
 
