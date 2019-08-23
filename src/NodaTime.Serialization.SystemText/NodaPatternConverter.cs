@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using NodaTime.Text;
 
@@ -64,7 +65,7 @@ namespace NodaTime.Serialization.SystemText
         protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             validator?.Invoke(value);
-            writer.WriteStringValue(pattern.Format(value));
+            writer.WriteStringValue(JsonEncodedText.Encode(pattern.Format(value), JavaScriptEncoder.UnsafeRelaxedJsonEscaping));
         }
     }
 }

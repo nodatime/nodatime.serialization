@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -63,7 +64,7 @@ namespace NodaTime.Serialization.SystemText
         {
             var pattern = LocalDatePattern.Iso;
             string text = pattern.Format(value.Start) + "/" + pattern.Format(value.End);
-            writer.WriteStringValue(text);
+            writer.WriteStringValue(JsonEncodedText.Encode(text, JavaScriptEncoder.UnsafeRelaxedJsonEscaping));
         }
     }
 }
