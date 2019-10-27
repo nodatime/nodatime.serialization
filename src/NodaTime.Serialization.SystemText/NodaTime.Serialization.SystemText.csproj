@@ -18,8 +18,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="NodaTime" Version="2.4.5" />
-      <PackageReference Include="System.Text.Json" Version="4.6.0-preview7.19362.9" />
+      <PackageReference Include="NodaTime" Version="2.4.7" />
+      <PackageReference Include="System.Text.Json" Version="4.6.0" />
       <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
     </ItemGroup>
 
