@@ -19,7 +19,7 @@ namespace NodaTime.Serialization.Test.SystemText
         public void OffsetConverter()
         {
             var value = Offset.FromHoursAndMinutes(5, 30);
-            string json = "\"+05:30\"";
+            string json = "\"\\u002B05:30\"";
             AssertConversions(value, json, NodaConverters.OffsetConverter);
         }
 
@@ -148,7 +148,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
             var earlierValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
             var laterValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(0));
-            string earlierJson = "\"2012-10-28T01:30:00+01 Europe/London\"";
+            string earlierJson = "\"2012-10-28T01:30:00\\u002B01 Europe/London\"";
             string laterJson = "\"2012-10-28T01:30:00Z Europe/London\"";
             var converter = NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb);
 
@@ -170,7 +170,7 @@ namespace NodaTime.Serialization.Test.SystemText
             // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
             // See issue 284 for details.
             var value = new LocalDateTime(2012, 1, 2, 3, 4, 5).PlusNanoseconds(123456789).WithOffset(Offset.FromHours(5));
-            string json = "\"2012-01-02T03:04:05.123456789+05:00\"";
+            string json = "\"2012-01-02T03:04:05.123456789\\u002B05:00\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 
