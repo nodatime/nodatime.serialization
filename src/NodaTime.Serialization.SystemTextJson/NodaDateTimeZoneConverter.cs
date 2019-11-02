@@ -15,10 +15,8 @@ namespace NodaTime.Serialization.SystemTextJson
         private readonly IDateTimeZoneProvider provider;
 
         /// <param name="provider">Provides the <see cref="DateTimeZone"/> that corresponds to each time zone ID in the JSON string.</param>
-        public NodaDateTimeZoneConverter(IDateTimeZoneProvider provider)
-        {
+        public NodaDateTimeZoneConverter(IDateTimeZoneProvider provider) =>
             this.provider = provider;
-        }
 
         /// <summary>
         /// Reads the time zone ID (which must be a string) from the reader, and converts it to a time zone.
@@ -43,9 +41,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON data to.</param>
         /// <param name="value">The value to serializer.</param>
         /// <param name="options">The serialization options to use for nested serialization.</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateTimeZone value, JsonSerializerOptions options)
-        {
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateTimeZone value, JsonSerializerOptions options) =>
             writer.WriteStringValue(value.Id);
-        }
     }
 }

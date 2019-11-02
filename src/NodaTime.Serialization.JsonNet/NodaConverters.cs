@@ -15,7 +15,7 @@ namespace NodaTime.Serialization.JsonNet
     public static class NodaConverters
     {
         /// <summary>
-        /// Converter for instants, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks, and
+        /// Converter for instants, using the ISO-8601 date/time pattern, extended as required to accommodate nanoseconds, and
         /// specifying 'Z' at the end to show it's effectively in UTC.
         /// </summary>
         public static JsonConverter InstantConverter { get; }
@@ -29,7 +29,7 @@ namespace NodaTime.Serialization.JsonNet
                 LocalDatePattern.Iso, CreateIsoValidator<LocalDate>(x => x.Calendar));
 
         /// <summary>
-        /// Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks.
+        /// Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate nanoseconds.
         /// No time zone designator is applied.
         /// </summary>
         public static JsonConverter LocalDateTimeConverter { get; }
@@ -37,7 +37,7 @@ namespace NodaTime.Serialization.JsonNet
                 LocalDateTimePattern.ExtendedIso, CreateIsoValidator<LocalDateTime>(x => x.Calendar));
 
         /// <summary>
-        /// Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate milliseconds and ticks.
+        /// Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate nanoseconds.
         /// </summary>
         public static JsonConverter LocalTimeConverter { get; }
             = new NodaPatternConverter<LocalTime>(LocalTimePattern.ExtendedIso);
@@ -124,7 +124,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Normalizing ISO converter for periods. Use this when you want compatibility with systems expecting
         /// ISO durations (~= Noda Time periods). However, note that Noda Time can have negative periods. Note that
-        /// this converter losees information - after serialization and deserialization, "90 minutes" will become "an hour and 30 minutes".
+        /// this converter loses information - after serialization and deserialization, "90 minutes" will become "an hour and 30 minutes".
         /// </summary>
         public static JsonConverter NormalizingIsoPeriodConverter { get; }
             = new NodaPatternConverter<Period>(PeriodPattern.NormalizingIso);

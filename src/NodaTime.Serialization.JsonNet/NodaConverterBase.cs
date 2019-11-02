@@ -11,7 +11,7 @@ namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>
     /// Base class for all the Json.NET converters which handle value types (which is most of them).
-    /// This deals handles all the boilerplate code dealing with nullity.
+    /// This handles all the boilerplate code dealing with nullity.
     /// </summary>
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public abstract class NodaConverterBase<T> : JsonConverter

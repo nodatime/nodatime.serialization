@@ -9,7 +9,7 @@ using NodaTime.Utility;
 namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
-    /// Json.NET converter for <see cref="Interval"/>.
+    /// System.Text.Json converter for <see cref="Interval"/>.
     /// </summary>
     internal sealed class NodaIsoIntervalConverter : NodaConverterBase<Interval>
     {
