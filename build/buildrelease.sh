@@ -20,12 +20,9 @@ git clone https://github.com/nodatime/nodatime.serialization.git releasebuild -c
 cd releasebuild
 git checkout $TAG
 
-dotnet restore src/NodaTime.Serialization.JsonNet
-dotnet restore src/NodaTime.Serialization.Test
-dotnet restore src/NodaTime.Serialization.Protobuf
-
 dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.JsonNet
 dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.Protobuf
+dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.SystemTextJson
 dotnet build -c Release src/NodaTime.Serialization.Test
 
 # Only test against netcoreapp2.0 now; there's no conditional code here,
