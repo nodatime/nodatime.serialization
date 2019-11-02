@@ -1,26 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <Description>Provides serialization support between Noda Time and System.Text.Json</Description>
-        <AssemblyTitle>Noda Time</AssemblyTitle>
-        <Version>1.0.0-beta00</Version>
-        <Authors>Jon Skeet</Authors>
-        <TargetFrameworks>netstandard2.0</TargetFrameworks>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <AssemblyName>NodaTime.Serialization.SystemTextJson</AssemblyName>
-        <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
-        <SignAssembly>true</SignAssembly>
-        <PackageTags>nodatime;json</PackageTags>
-        <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
-        <Deterministic>True</Deterministic>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Description>Provides serialization support between Noda Time and System.Text.Json</Description>
+    <AssemblyTitle>Noda Time</AssemblyTitle>
+    <Version>1.0.0-beta00</Version>
+    <Authors>Jon Skeet</Authors>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PackageTags>nodatime;json</PackageTags>
+    <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
+    <Deterministic>True</Deterministic>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="NodaTime" Version="2.4.7" />
-      <PackageReference Include="System.Text.Json" Version="4.6.0" />
-      <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-    </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="2.4.7" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+  </ItemGroup>
 </Project>

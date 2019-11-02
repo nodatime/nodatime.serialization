@@ -33,7 +33,7 @@ namespace NodaTime.Serialization.SystemTextJson
 
                 var propertyName = reader.GetString();
                 // If we haven't got a property value, that's pretty weird. Break out of the loop,
-                // and let JSON.NET fail appropriately...
+                // and let the underlying framework fail appropriately...
                 if (!reader.Read())
                 {
                     break;
