@@ -31,4 +31,4 @@ dotnet test -c Release src/NodaTime.Serialization.Test/NodaTime.Serialization.Te
 
 mkdir $OUTPUT
 
-dotnet pack --no-build -c Release src/NodaTime.Serialization.sln -o $PWD/OUTPUT
+dotnet pack --no-build -c Release src/NodaTime.Serialization.sln -o $PWD/$OUTPUT
