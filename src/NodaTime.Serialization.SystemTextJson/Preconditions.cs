@@ -5,7 +5,7 @@
 using System;
 using NodaTime.Utility;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// Helper static methods for argument/state validation. (Just the subset used within this library.)

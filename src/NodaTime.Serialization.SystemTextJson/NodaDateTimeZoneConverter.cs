@@ -5,7 +5,7 @@
 using System.Text.Json;
 using NodaTime.TimeZones;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// System.Text.Json converter for <see cref="DateTimeZone"/>.

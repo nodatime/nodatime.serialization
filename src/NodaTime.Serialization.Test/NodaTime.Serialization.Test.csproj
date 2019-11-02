@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj" />
     <ProjectReference Include="..\NodaTime.Serialization.Protobuf\NodaTime.Serialization.Protobuf.csproj" />
-    <ProjectReference Include="..\NodaTime.Serialization.SystemText\NodaTime.Serialization.SystemText.csproj" />
+    <ProjectReference Include="..\NodaTime.Serialization.SystemTextJson\NodaTime.Serialization.SystemTextJson.csproj" />
   </ItemGroup>
 
   <ItemGroup>

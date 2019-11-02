@@ -5,7 +5,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NodaTime.Serialization.SystemText;
+using NodaTime.Serialization.SystemTextJson;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 using JsonSerializer = System.Text.Json.JsonSerializer;

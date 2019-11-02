@@ -6,7 +6,7 @@ using System;
 using System.Text.Json.Serialization;
 using NodaTime.Text;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// Convenience class to expose preconfigured converters for Noda Time types, and factory methods
