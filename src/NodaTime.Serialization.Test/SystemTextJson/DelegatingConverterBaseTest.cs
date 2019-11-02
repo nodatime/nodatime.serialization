@@ -4,10 +4,10 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NodaTime.Serialization.SystemText;
+using NodaTime.Serialization.SystemTextJson;
 using NodaTime.Text;
 using NUnit.Framework;
-using NodaConverters = NodaTime.Serialization.SystemText.NodaConverters;
+using NodaConverters = NodaTime.Serialization.SystemTextJson.NodaConverters;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -56,7 +56,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             // No need to create a new one of these each time...
             private static readonly JsonConverter<LocalDate> converter =
-                new Serialization.SystemText.NodaPatternConverter<LocalDate>(LocalDatePattern.CreateWithInvariantCulture("d MMMM yyyy"));
+                new Serialization.SystemTextJson.NodaPatternConverter<LocalDate>(LocalDatePattern.CreateWithInvariantCulture("d MMMM yyyy"));
 
             public LongDateConverter() : base(converter)
             {

@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using NodaTime.Utility;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// Base class for all the System.Text.Json converters which handle value types (which is most of them).

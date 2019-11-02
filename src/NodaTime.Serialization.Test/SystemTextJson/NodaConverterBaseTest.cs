@@ -5,7 +5,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using NodaTime.Serialization.SystemText;
+using NodaTime.Serialization.SystemTextJson;
 using NodaTime.Utility;
 using NUnit.Framework;
 

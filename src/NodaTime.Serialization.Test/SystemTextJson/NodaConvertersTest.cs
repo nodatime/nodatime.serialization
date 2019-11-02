@@ -4,7 +4,7 @@
 
 using System;
 using System.Text.Json;
-using NodaTime.Serialization.SystemText;
+using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
 using static NodaTime.Serialization.Test.SystemText.TestHelper;
 

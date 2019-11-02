@@ -1,6 +1,7 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.Test", "NodaTime.Serialization.Test\NodaTime.Serialization.Test.csproj", "{07063FD8-A2C2-43FB-A52C-093F4FB3F483}"
 EndProject
@@ -10,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.Benc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.Protobuf", "NodaTime.Serialization.Protobuf\NodaTime.Serialization.Protobuf.csproj", "{7F18FFC3-BF5A-46E5-B471-94D3F53C47AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Serialization.SystemText", "NodaTime.Serialization.SystemText\NodaTime.Serialization.SystemText.csproj", "{3B4A09D5-F07E-435C-8546-F54509C1DC7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.SystemTextJson", "NodaTime.Serialization.SystemTextJson\NodaTime.Serialization.SystemTextJson.csproj", "{3B4A09D5-F07E-435C-8546-F54509C1DC7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,5 +86,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {104569C5-D180-4FB1-885F-DE4D2CBC12D6}
 	EndGlobalSection
 EndGlobal

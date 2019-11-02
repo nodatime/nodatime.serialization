@@ -6,7 +6,7 @@ using System.Text.Json;
 using NodaTime.Text;
 using NodaTime.Utility;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// Json.NET converter for <see cref="Interval"/>.

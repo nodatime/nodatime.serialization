@@ -6,7 +6,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// Converter which does nothing but delegate to another one for all operations.

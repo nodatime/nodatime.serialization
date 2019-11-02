@@ -6,7 +6,7 @@ using System;
 using System.Text.Json;
 using NodaTime.Text;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// A JSON converter for types which can be represented by a single string value, parsed or formatted

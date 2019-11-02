@@ -4,7 +4,7 @@
 
 using System.Text.Json;
 
-namespace NodaTime.Serialization.SystemText
+namespace NodaTime.Serialization.SystemTextJson
 {
     /// <summary>
     /// System.Text.Json converter for <see cref="Interval"/> using a compound representation. The start and
