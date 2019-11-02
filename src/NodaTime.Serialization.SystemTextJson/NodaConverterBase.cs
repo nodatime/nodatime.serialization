@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Utility;
 using System;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NodaTime.Utility;
 
 namespace NodaTime.Serialization.SystemTextJson
 {
@@ -31,7 +29,6 @@ namespace NodaTime.Serialization.SystemTextJson
             try
             {
                 // Delegate to the concrete subclass.
-                // Note that we don't currently pass existingValue down; we could change this if we ever found a use for it.
                 return ReadJsonImpl(ref reader, options);
             }
             catch (Exception ex)
@@ -49,17 +46,18 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <returns>The deserialized value of type T.</returns>
         protected abstract T ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options);
 
+        // Note: currently there's no concrete benefit in delegating to WriteJsonImpl rather than just
+        // overriding Write directly, but we *could* put any common code (like the exception handling above)
+        // in here in the future.
+
         /// <summary>
-        /// Writes the given value to a Json.NET writer.
+        /// Writes the given value to a Utf8JsonWriter.
         /// </summary>
         /// <param name="writer">The writer to write the JSON to.</param>
         /// <param name="value">The value to write.</param>
         /// <param name="options">The serializer options to use for any embedded serialization.</param>
-        public override void Write(Utf8JsonWriter writer,
-            T value, JsonSerializerOptions options)
-        {
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
             WriteJsonImpl(writer, value, options);
-        }
 
         /// <summary>
         /// Implemented by concrete subclasses, this performs the final write operation for a non-null value of type T
@@ -68,7 +66,6 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON data to</param>
         /// <param name="value">The value to serializer</param>
         /// <param name="options">The serializer options to use for nested serialization</param>
-        protected abstract void WriteJsonImpl(Utf8JsonWriter writer,
-            T value, JsonSerializerOptions options);
+        protected abstract void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options);
     }
 }

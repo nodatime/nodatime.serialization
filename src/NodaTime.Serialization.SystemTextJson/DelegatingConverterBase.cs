@@ -38,26 +38,16 @@ namespace NodaTime.Serialization.SystemTextJson
         /// Constructs a converter delegating to <paramref name="original"/>.
         /// </summary>
         /// <param name="original">The converter to delegate to. Must not be null.</param>
-        protected DelegatingConverterBase(JsonConverter<T> original)
-        {
-            if (original == null)
-            {
-                throw new ArgumentNullException(nameof(original));
-            }
-            this.original = original;
-        }
+        protected DelegatingConverterBase(JsonConverter<T> original) =>
+            this.original = original ?? throw new ArgumentNullException(nameof(original));
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-        {
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
             original.Write(writer, value, options);
-        }
 
         /// <inheritdoc />
-        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            return original.Read(ref reader, typeToConvert, options);
-        }
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+            original.Read(ref reader, typeToConvert, options);
 
         /// <inheritdoc />
         public override bool CanConvert(Type objectType) => original.CanConvert(objectType);

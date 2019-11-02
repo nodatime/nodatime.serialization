@@ -12,8 +12,8 @@ namespace NodaTime.Serialization.SystemTextJson
     /// </summary>
     internal static class Preconditions
     {
-        internal static T CheckNotNull<T>(T argument, string paramName)
-            => argument == null ? throw new ArgumentNullException(paramName) : argument;
+        internal static T CheckNotNull<T>(T argument, string paramName) =>
+            argument == null ? throw new ArgumentNullException(paramName) : argument;
 
         internal static void CheckArgument(bool expression, string parameter, string message)
         {
