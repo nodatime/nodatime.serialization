@@ -17,6 +17,13 @@ namespace NodaTime.Serialization.SystemTextJson
     public abstract class NodaConverterBase<T> : JsonConverter<T>
     {
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        protected NodaConverterBase()
+        {
+        }
+
+        /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
         /// </summary>
         /// <param name="reader">The json reader to read data from.</param>
