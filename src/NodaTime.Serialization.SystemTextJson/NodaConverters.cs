@@ -43,6 +43,12 @@ namespace NodaTime.Serialization.SystemTextJson
             = new NodaPatternConverter<LocalTime>(LocalTimePattern.ExtendedIso);
 
         /// <summary>
+        /// Converter for annual dates.
+        /// </summary>
+        public static JsonConverter<AnnualDate> AnnualDateConverter { get; }
+            = new NodaAnnualDateConverter();
+
+        /// <summary>
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
         /// </summary>
         public static JsonConverter<Interval> IntervalConverter { get; } = new NodaIntervalConverter();
