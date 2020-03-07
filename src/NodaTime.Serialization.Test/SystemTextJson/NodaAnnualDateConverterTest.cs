@@ -2,10 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
-using static NodaTime.Serialization.Test.SystemText.TestHelper;
+using System.Text.Json;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -16,93 +15,57 @@ namespace NodaTime.Serialization.Test.SystemText
             Converters = { NodaConverters.AnnualDateConverter },
         };
 
-        private readonly JsonSerializerOptions optionsCamelCase = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { NodaConverters.AnnualDateConverter },
-        };
-
         [Test]
-        public void RoundTrip()
+        public void Serialize_NonNullableType()
         {
-            var month = 7;
-            var day = 1;
-            var annualDate = new AnnualDate(month, day);
-            AssertConversions(annualDate, "{\"Month\":7,\"Day\":1}", options);
-        }
-
-        [Test]
-        public void RoundTrip_CamelCase()
-        {
-            var month = 7;
-            var day = 1;
-            var annualDate = new AnnualDate(month, day);
-            AssertConversions(annualDate, "{\"month\":7,\"day\":1}", optionsCamelCase);
-        }
-
-        [Test]
-        public void Serialize_InObject()
-        {
-            var month = 7;
-            var day = 1;
-            var annualDate = new AnnualDate(month, day);
-
-            var testObject = new TestObject { AnnualDate = annualDate };
-
-            var json = JsonSerializer.Serialize(testObject, options);
-
-            string expectedJson = "{\"AnnualDate\":{\"Month\":7,\"Day\":1}}";
+            var annualDate = new AnnualDate(07, 01);
+            var json = JsonSerializer.Serialize(annualDate, options);
+            string expectedJson = "\"07-01\"";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
-        public void Serialize_InObject_CamelCase()
+        public void Serialize_NullableType_NonNullValue()
         {
-            var month = 7;
-            var day = 1;
-            var annualDate = new AnnualDate(month, day);
-
-            var testObject = new TestObject { AnnualDate = annualDate };
-
-            var json = JsonSerializer.Serialize(testObject, optionsCamelCase);
-
-            string expectedJson = "{\"annualDate\":{\"month\":7,\"day\":1}}";
+            AnnualDate? annualDate = new AnnualDate(07, 01);
+            var json = JsonSerializer.Serialize(annualDate, options);
+            string expectedJson = "\"07-01\"";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
-        public void Deserialize_InObject()
+        public void Serialize_NullableType_NullValue()
         {
-            string json = "{\"AnnualDate\":{\"Month\":7,\"Day\":1}}";
+            AnnualDate? annualDate = null;
+            var json = JsonSerializer.Serialize(annualDate, options);
+            string expectedJson = "null";
+            Assert.AreEqual(expectedJson, json);
+        }
 
-            var testObject = JsonSerializer.Deserialize<TestObject>(json, options);
-
-            var annualDate = testObject.AnnualDate;
-
-            var month = 7;
-            var day = 1;
-            var expectedAnnualDate = new AnnualDate(month, day);
+        [Test]
+        public void Deserialize_ToNonNullableType()
+        {
+            string json = "\"07-01\"";
+            var annualDate = JsonSerializer.Deserialize<AnnualDate>(json, options);
+            var expectedAnnualDate = new AnnualDate(07, 01);
             Assert.AreEqual(expectedAnnualDate, annualDate);
         }
 
         [Test]
-        public void Deserialize_InObject_CamelCase()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
-            string json = "{\"annualDate\":{\"month\":7,\"day\":1}}";
-
-            var testObject = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCase);
-
-            var annualDate = testObject.AnnualDate;
-
-            var month = 7;
-            var day = 1;
-            var expectedAnnualDate = new AnnualDate(month, day);
+            string json = "\"07-01\"";
+            var annualDate = JsonSerializer.Deserialize<AnnualDate?>(json, options);
+            AnnualDate? expectedAnnualDate = new AnnualDate(07, 01);
             Assert.AreEqual(expectedAnnualDate, annualDate);
         }
 
-        public class TestObject
+        [Test]
+        public void Deserialize_ToNullableType_NullValue()
         {
-            public AnnualDate AnnualDate { get; set; }
+            string json = "null";
+            var annualDate = JsonSerializer.Deserialize<AnnualDate?>(json, options);
+            Assert.IsNull(annualDate);
         }
     }
 }
