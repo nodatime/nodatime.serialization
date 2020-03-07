@@ -137,6 +137,7 @@ namespace NodaTime.Serialization.JsonNet
             converters.Add(NodaConverters.LocalDateConverter);
             converters.Add(NodaConverters.LocalDateTimeConverter);
             converters.Add(NodaConverters.LocalTimeConverter);
+            converters.Add(NodaConverters.AnnualDateConverter);
             converters.Add(NodaConverters.DateIntervalConverter);
             converters.Add(NodaConverters.OffsetConverter);
             converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
