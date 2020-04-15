@@ -16,10 +16,23 @@ namespace NodaTime.Serialization.Test.SystemText
             Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
         };
 
+        private readonly JsonSerializerOptions optionsCaseInsensitive = new JsonSerializerOptions
+        {
+            Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
+            PropertyNameCaseInsensitive = true,
+        };
+
         private readonly JsonSerializerOptions optionsCamelCase = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
+        };
+
+        private readonly JsonSerializerOptions optionsCamelCaseCaseInsensitive = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
+            PropertyNameCaseInsensitive = true,
         };
 
         [Test]
@@ -98,6 +111,64 @@ namespace NodaTime.Serialization.Test.SystemText
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
             var expectedInterval = new Interval(startInstant, endInstant);
             Assert.AreEqual(expectedInterval, interval);
+        }
+
+        [Test]
+        public void Deserialize_CaseSensitive()
+        {
+            string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, options); ;
+
+            Assert.True(testObject.Interval.HasStart);
+            Assert.False(testObject.Interval.HasEnd);
+        }
+
+        [Test]
+        public void Deserialize_CaseSensitive_CamelCase()
+        {
+            string json = "{\"interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCase); ;
+
+            Assert.False(testObject.Interval.HasStart);
+            Assert.True(testObject.Interval.HasEnd);
+        }
+
+        [Test]
+        public void Deserialize_CaseInsensitive()
+        {
+            string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObjectPascalCase = JsonSerializer.Deserialize<TestObject>(json, optionsCaseInsensitive); ;
+            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive); ;
+
+            var intervalPascalCase = testObjectPascalCase.Interval;
+            var intervalCamelCase = testObjectCamelCase.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, intervalPascalCase);
+            Assert.AreEqual(expectedInterval, intervalCamelCase);
+        }
+
+        [Test]
+        public void Deserialize_CaseInsensitive_CamelCase()
+        {
+            string json = "{\"interval\":{\"start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObjectPascalCase = JsonSerializer.Deserialize<TestObject>(json, optionsCaseInsensitive);
+            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive);
+
+            var intervalPascalCase = testObjectPascalCase.Interval;
+            var intervalCamelCase = testObjectCamelCase.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, intervalPascalCase);
+            Assert.AreEqual(expectedInterval, intervalCamelCase);
         }
 
         public class TestObject
