@@ -106,6 +106,42 @@ namespace NodaTime.Serialization.Test.JsonNet
             Assert.AreEqual(expectedInterval, interval);
         }
 
+        [Test]
+        public void Deserialize_CaseInsensitive()
+        {
+            string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
+            var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+
+            var intervalPascalCase = testObjectPascalCase.Interval;
+            var intervalCamelCase = testObjectCamelCase.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, intervalPascalCase);
+            Assert.AreEqual(expectedInterval, intervalCamelCase);
+        }
+
+        [Test]
+        public void Deserialize_CaseInsensitive_CamelCase()
+        {
+            string json = "{\"interval\":{\"start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
+            var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+
+            var intervalPascalCase = testObjectPascalCase.Interval;
+            var intervalCamelCase = testObjectCamelCase.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, intervalPascalCase);
+            Assert.AreEqual(expectedInterval, intervalCamelCase);
+        }
+
         public class TestObject
         {
             public Interval Interval { get; set; }
