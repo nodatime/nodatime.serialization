@@ -40,14 +40,16 @@ namespace NodaTime.Serialization.SystemTextJson
                     break;
                 }
 
+                var caseSensitivity = options.PropertyNameCaseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
-                if (string.Equals(propertyName, startPropertyName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(propertyName, startPropertyName, caseSensitivity))
                 {
                     startInstant = options.ReadType<Instant>(ref reader);
                 }
 
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
-                if (string.Equals(propertyName, endPropertyName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(propertyName, endPropertyName, caseSensitivity))
                 {
                     endInstant = options.ReadType<Instant>(ref reader);
                 }
