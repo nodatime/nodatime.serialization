@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Text.Json;
 
 namespace NodaTime.Serialization.SystemTextJson
@@ -40,13 +41,13 @@ namespace NodaTime.Serialization.SystemTextJson
                 }
 
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
-                if (propertyName == startPropertyName)
+                if (string.Equals(propertyName, startPropertyName, StringComparison.OrdinalIgnoreCase))
                 {
                     startInstant = options.ReadType<Instant>(ref reader);
                 }
 
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
-                if (propertyName == endPropertyName)
+                if (string.Equals(propertyName, endPropertyName, StringComparison.OrdinalIgnoreCase))
                 {
                     endInstant = options.ReadType<Instant>(ref reader);
                 }
