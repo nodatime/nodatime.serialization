@@ -20,15 +20,15 @@ git clone https://github.com/nodatime/nodatime.serialization.git releasebuild -c
 cd releasebuild
 git checkout $TAG
 
-dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.JsonNet
-dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.Protobuf
-dotnet build -c Release -p:SourceLinkCreate=true src/NodaTime.Serialization.SystemTextJson
-dotnet build -c Release src/NodaTime.Serialization.Test
+export Configuration=Release
+export ContinuousIntegrationBuild=true
 
-# Only test against netcoreapp2.0 now; there's no conditional code here,
+dotnet build src/NodaTime.Serialization.sln
+
+# Only test against .NET Core now; there's no conditional code here,
 # and the Protobuf project only supports 2.0 anyway.
-dotnet test -c Release src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
+dotnet test src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
 
 mkdir $OUTPUT
 
-dotnet pack --no-build -c Release src/NodaTime.Serialization.sln -o $PWD/$OUTPUT
+dotnet pack --no-build src/NodaTime.Serialization.sln -o $PWD/$OUTPUT
