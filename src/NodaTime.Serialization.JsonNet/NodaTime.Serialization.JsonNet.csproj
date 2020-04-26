@@ -2,25 +2,14 @@
 
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and Json.NET.</Description>
-    <AssemblyTitle>Noda Time</AssemblyTitle>
     <Version>2.2.0</Version>
-    <Authors>Jon Skeet</Authors>
     <TargetFrameworks>net45;netstandard1.3;netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>NodaTime.Serialization.JsonNet</AssemblyName>
-    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
     <PackageTags>nodatime;json;jsonnet</PackageTags>
-    <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
-    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="2.4.5" />
+    <PackageReference Include="NodaTime" Version="2.4.8" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>
   
 </Project>
