@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and Json.NET.</Description>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
     <TargetFrameworks>net45;netstandard1.3;netstandard2.0</TargetFrameworks>
     <PackageTags>nodatime;json;jsonnet</PackageTags>
   </PropertyGroup>
