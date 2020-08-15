@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>Provides serialization support between Noda Time and protobuf-net</Description>
+        <Version>1.0.0</Version>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageTags>nodatime;protobuf-net</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NodaTime" Version="[3.0.0,4.0.0)" />
+        <PackageReference Include="protobuf-net" Version="[3.0.0,4.0.0.0)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NodaTime.Serialization.Protobuf\NodaTime.Serialization.Protobuf.csproj" />
+    </ItemGroup>
+</Project>
