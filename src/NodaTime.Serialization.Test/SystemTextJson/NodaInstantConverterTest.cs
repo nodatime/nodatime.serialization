@@ -74,7 +74,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);
             var instant = Instant.FromDateTimeUtc(dateTime);
-            var jsonDateTime = JsonSerializer.Serialize(instant, options);
+            var jsonDateTime = JsonSerializer.Serialize(dateTime, options);
             var jsonInstant = JsonSerializer.Serialize(instant, options);
             Assert.AreEqual(jsonDateTime, jsonInstant);
         }

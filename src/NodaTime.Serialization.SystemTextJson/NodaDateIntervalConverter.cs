@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Text.Json;
 using NodaTime.Utility;
 
@@ -38,14 +39,16 @@ namespace NodaTime.Serialization.SystemTextJson
                     break;
                 }
 
+                var caseSensitivity = options.PropertyNameCaseInsensitive ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
-                if (propertyName == startPropertyName)
+                if (string.Equals(propertyName, startPropertyName, caseSensitivity))
                 {
                     startLocalDate = options.ReadType<LocalDate>(ref reader);
                 }
 
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
-                if (propertyName == endPropertyName)
+                if (string.Equals(propertyName, endPropertyName, caseSensitivity))
                 {
                     endLocalDate = options.ReadType<LocalDate>(ref reader);
                 }
