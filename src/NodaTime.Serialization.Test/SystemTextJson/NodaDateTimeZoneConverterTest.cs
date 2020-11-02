@@ -31,6 +31,19 @@ namespace NodaTime.Serialization.Test.SystemText
         }
 
         [Test]
+        public void SerializeAsObject()
+        {
+            object dateTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+            var json = JsonSerializer.Serialize(dateTimeZone, new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Converters = { converter }
+            });
+            string expectedJson = "\"America/Los_Angeles\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
         public void Deserialize()
         {
             string json = "\"America/Los_Angeles\"";

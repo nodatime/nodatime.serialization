@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Text.Json;
 using NodaTime.TimeZones;
 
@@ -18,20 +17,6 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="provider">Provides the <see cref="DateTimeZone"/> that corresponds to each time zone ID in the JSON string.</param>
         public NodaDateTimeZoneConverter(IDateTimeZoneProvider provider) =>
             this.provider = provider;
-
-        /// <summary>
-        /// Determines whether the type can be converted.
-        /// </summary>
-        /// <remarks>
-        /// The default implementation is to return True when <paramref name="typeToConvert"/> equals typeof(T).
-        /// </remarks>
-        /// <param name="typeToConvert"></param>
-        /// <returns>True if the type can be converted, False otherwise.</returns>
-        public override bool CanConvert(Type typeToConvert)
-        {
-            // we need to check inheritance for abstract DateTimeZone
-            return typeToConvert == typeof(DateTimeZone) || typeToConvert.BaseType == typeof(DateTimeZone);
-        }
 
         /// <summary>
         /// Reads the time zone ID (which must be a string) from the reader, and converts it to a time zone.
