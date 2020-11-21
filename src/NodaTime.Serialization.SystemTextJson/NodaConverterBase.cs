@@ -4,6 +4,7 @@
 
 using NodaTime.Utility;
 using System;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -22,6 +23,27 @@ namespace NodaTime.Serialization.SystemTextJson
         protected NodaConverterBase()
         {
         }
+
+        #region CanConvert
+
+        // This code section partially copied from NodaTime.Serialization.JsonNet.NodaConverterBase to support inheritance of types.
+        // For now only DateTimeZone uses inheritance 
+
+        // For value types and sealed classes, we can optimize and not call IsAssignableFrom.
+        private static readonly bool CheckAssignableFrom =
+            !(typeof(T).GetTypeInfo().IsValueType || (typeof(T).GetTypeInfo().IsClass && typeof(T).GetTypeInfo().IsSealed));
+
+        /// <summary>
+        /// Returns whether or not this converter supports the given type.
+        /// </summary>
+        /// <param name="objectType">The type to check for compatibility.</param>
+        /// <returns>True if the given type is supported by this converter (including the nullable form for
+        /// value types); false otherwise.</returns>
+        public override bool CanConvert(Type objectType) =>
+            objectType == typeof(T) ||
+                (CheckAssignableFrom && typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()));
+
+        #endregion
 
         /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
