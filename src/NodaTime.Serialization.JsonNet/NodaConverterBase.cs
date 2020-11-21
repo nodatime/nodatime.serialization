@@ -25,9 +25,9 @@ namespace NodaTime.Serialization.JsonNet
 
         // For value types and sealed classes, we can optimize and not call IsAssignableFrom.
         private static readonly bool CheckAssignableFrom =
-            !(typeof(T).GetTypeInfo().IsValueType || (typeof(T).GetTypeInfo().IsClass && typeof(T).GetTypeInfo().IsSealed));
+            !(typeof(T).IsValueType || (typeof(T).IsClass && typeof(T).IsSealed));
 
-        private static readonly Type NullableT = typeof(T).GetTypeInfo().IsValueType 
+        private static readonly Type NullableT = typeof(T).IsValueType 
             ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
 
         // TODO: It's not clear whether we *should* support inheritance here. The Json.NET docs
@@ -44,7 +44,7 @@ namespace NodaTime.Serialization.JsonNet
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType) =>
             objectType == typeof(T) || objectType == NullableT ||
-            (CheckAssignableFrom && typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()));
+            (CheckAssignableFrom && typeof(T).IsAssignableFrom(objectType.GetTypeInfo()));
 
         /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
