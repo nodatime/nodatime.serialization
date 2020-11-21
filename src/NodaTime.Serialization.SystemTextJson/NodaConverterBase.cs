@@ -31,7 +31,7 @@ namespace NodaTime.Serialization.SystemTextJson
 
         // For value types and sealed classes, we can optimize and not call IsAssignableFrom.
         private static readonly bool CheckAssignableFrom =
-            !(typeof(T).GetTypeInfo().IsValueType || (typeof(T).GetTypeInfo().IsClass && typeof(T).GetTypeInfo().IsSealed));
+            !(typeof(T).IsValueType || (typeof(T).IsClass && typeof(T).IsSealed));
 
         /// <summary>
         /// Returns whether or not this converter supports the given type.
@@ -40,8 +40,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <returns>True if the given type is supported by this converter (including the nullable form for
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType) =>
-            objectType == typeof(T) ||
-                (CheckAssignableFrom && typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()));
+            objectType == typeof(T) || (CheckAssignableFrom && typeof(T).IsAssignableFrom(objectType));
 
         #endregion
 
