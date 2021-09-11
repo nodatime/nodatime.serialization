@@ -138,6 +138,28 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void ZonedDateTimeRFC3339Converter_LocalTimeWithOffsetAndZone()
+        {
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var value = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
+            string json = "\"2012-10-28T01:30:00+01[Europe/London]\"";
+            var converter = NodaConverters.CreateZonedDateTimeRFC3339();
+
+            AssertConversions(value, json, converter);
+        }
+
+        [Test]
+        public void ZonedDateTimeRFC3339Converter_LocalTimeNoOffsetWithZoneAndMilliseconds()
+        {
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var value = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30).PlusMilliseconds(123), zone, Offset.FromHours(0));
+            string json = "\"2012-10-28T01:30:00.123Z[Europe/London]\"";
+            var converter = NodaConverters.CreateZonedDateTimeRFC3339();
+
+            AssertConversions(value, json, converter);
+        }
+
+        [Test]
         public void OffsetDateTimeConverter()
         {
             var value = new LocalDateTime(2012, 1, 2, 3, 4, 5).PlusNanoseconds(123456789).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
