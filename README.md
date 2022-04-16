@@ -1,4 +1,4 @@
-[![Travis build Status](https://travis-ci.org/nodatime/nodatime.serialization.svg?branch=master)](https://travis-ci.org/nodatime/nodatime.serialization)
+[![Travis build Status](https://travis-ci.org/nodatime/nodatime.serialization.svg?branch=main)](https://travis-ci.org/nodatime/nodatime.serialization)
 
 # Noda Time serialization
 
