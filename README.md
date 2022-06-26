@@ -1,4 +1,4 @@
-[![Travis build Status](https://travis-ci.org/nodatime/nodatime.serialization.svg?branch=main)](https://travis-ci.org/nodatime/nodatime.serialization)
+[![GitHub Actions status](https://img.shields.io/github/workflow/status/nodatime/nodatime.serialization/Build%20push)](https://github.com/nodatime/nodatime.serialization/actions?query=workflow%3A%22Build+push%22)
 
 # Noda Time serialization
 

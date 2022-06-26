@@ -1,0 +1,27 @@
+name: Build push
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+        
+    - name: Build and test
+      run: |
+        dotnet test src/NodaTime.Serialization.Test
