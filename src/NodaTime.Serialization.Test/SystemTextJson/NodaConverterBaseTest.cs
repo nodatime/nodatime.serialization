@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.IO;
-using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
-using NodaTime.Utility;
 using NUnit.Framework;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
@@ -16,78 +14,42 @@ namespace NodaTime.Serialization.Test.SystemText
         [Test]
         public void Serialize_NonNullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             JsonSerializer.Serialize(5, options);
         }
 
         [Test]
         public void Serialize_NullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             JsonSerializer.Serialize((object)null, options);
         }
 
         [Test]
         public void Deserialize_NullableType_NullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             Assert.IsNull(JsonSerializer.Deserialize<int?>("null", options));
         }
 
         [Test]
         public void Deserialize_ReferenceType_NullValue()
         {
-            var converter = new TestStringConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestStringConverter>();
             Assert.IsNull(JsonSerializer.Deserialize<string>("null", options));
         }
 
         [Test]
         public void Deserialize_NullableType_NonNullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             Assert.AreEqual(5, JsonSerializer.Deserialize<int?>("\"5\"", options));
         }
 
         [Test]
         public void Deserialize_NonNullableType_NullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("null", options));
             Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("\"\"", options));
         }
@@ -95,15 +57,16 @@ namespace NodaTime.Serialization.Test.SystemText
         [Test]
         public void Deserialize_NonNullableType_NonNullValue()
         {
-            var converter = new TestConverter();
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Converters = { converter }
-            };
-
+            var options = CreateOptions<TestConverter>();
             Assert.AreEqual(5, JsonSerializer.Deserialize<int>("\"5\"", options));
         }
+
+        private static JsonSerializerOptions CreateOptions<TConverter>() where TConverter : JsonConverter, new() =>
+            new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Converters = { new TConverter() }
+            };
 
         private class TestConverter : NodaConverterBase<int>
         {
