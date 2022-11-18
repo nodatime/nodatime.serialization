@@ -70,6 +70,30 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void Deserialize_NullableType_EmptyString()
+        {
+            var converter = new TestConverter();
+
+            Assert.IsNull(JsonConvert.DeserializeObject<int?>("\"\"", converter));
+        }
+
+        [Test]
+        public void Deserialize_ReferenceType_EmptyString()
+        {
+            var converter = new TestStringConverter();
+
+            Assert.IsNull(JsonConvert.DeserializeObject<string>("\"\"", converter));
+        }
+
+        [Test]
+        public void Deserialize_NonNullableType_EmptyString()
+        {
+            var converter = new TestConverter();
+
+            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<int>("\"\"", converter));
+        }
+
+        [Test]
         public void CanConvert_ValidValues()
         {
             var converter = new TestConverter();
