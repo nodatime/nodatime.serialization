@@ -130,6 +130,36 @@ namespace NodaTime.Serialization.JsonNet
             return serializer;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="settings">The existing serializer settings to add Noda Time converters to.</param>
+        /// <param name="replacementConverter"></param>
+        /// <returns>The original <paramref name="settings"/> value, for further chaining.</returns>
+        public static JsonSerializerSettings WithReplacementNodaTimeConverter<T>(this JsonSerializerSettings settings, JsonConverter replacementConverter)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+            ReplaceExistingConverters<T>(settings.Converters, replacementConverter);
+            return settings;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+        /// <param name="replacementConverter"></param>
+        /// <returns>The original <paramref name="serializer"/> value, for further chaining.</returns>
+        public static JsonSerializer WithReplacementNodaTimeConverter<T>(this JsonSerializer serializer, JsonConverter replacementConverter)
+        {
+            if (serializer == null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+            ReplaceExistingConverters<T>(serializer.Converters, replacementConverter);
+            return serializer;
+        }
+
         private static void AddDefaultConverters(IList<JsonConverter> converters, IDateTimeZoneProvider provider)
         {
             converters.Add(NodaConverters.InstantConverter);

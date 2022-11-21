@@ -107,6 +107,16 @@ namespace NodaTime.Serialization.JsonNet
                 CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
 
         /// <summary>
+        /// Create a converter for zoned date/times that uses the format defined in the
+        /// [proposed] extension to RFC 3339 for indicating time zones in IANA format
+        /// </summary>
+        /// <returns></returns>
+        public static JsonConverter CreateZonedDateTimeRFC3339() =>
+            new NodaPatternConverter<ZonedDateTime>(
+                ZonedDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFo<G>'['z']'", DateTimeZoneProviders.Tzdb),
+                CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
+
+        /// <summary>
         /// Creates a converter for time zones, using the given provider.
         /// </summary>
         /// <param name="provider">The time zone provider to use when parsing.</param>

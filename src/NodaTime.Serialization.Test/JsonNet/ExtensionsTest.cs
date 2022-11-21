@@ -102,6 +102,31 @@ namespace NodaTime.Serialization.Test.JsonNet
                 JsonConvert.SerializeObject(interval, configuredSettings));
         }
 
+        [Test]
+        public void Settings_ConfigureForNodaTime_DefaultConverters()
+        {
+            var configuredSettings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+            var explicitSettings = new JsonSerializerSettings
+            {
+                Converters = { NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb) }
+            };
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var zonedDateTime = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
+            Assert.AreEqual(JsonConvert.SerializeObject(zonedDateTime, explicitSettings),
+                JsonConvert.SerializeObject(zonedDateTime, configuredSettings));
+        }
+
+        [Test]
+        public void Settings_ConfigureForNodaTime_WithReplacementNodaConverter()
+        {
+            var configuredSettings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb).WithReplacementNodaTimeConverter<ZonedDateTime>(NodaConverters.CreateZonedDateTimeRFC3339());
+            var explicitSettings = new JsonSerializerSettings { Converters = { NodaConverters.CreateZonedDateTimeRFC3339() } };
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var zonedDateTime = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
+            Assert.AreEqual(JsonConvert.SerializeObject(zonedDateTime, explicitSettings),
+                JsonConvert.SerializeObject(zonedDateTime, configuredSettings));
+        }
+
         private static string Serialize<T>(T value, JsonSerializer serializer)
         {
             var writer = new StringWriter();
