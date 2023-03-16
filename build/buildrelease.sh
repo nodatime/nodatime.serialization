@@ -12,6 +12,12 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 
+if [[ $SIGNATURE_FINGERPRINT == "" || $SIGNATURE_TIMESTAMPER == "" ]]
+then
+  echo "Please set SIGNATURE_FINGERPRINT and SIGNATURE_TIMESTAMPER"
+  exit 1
+fi
+
 declare -r TAG=$1
 declare -r OUTPUT=artifacts
 
@@ -31,4 +37,23 @@ dotnet test src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
 
 mkdir $OUTPUT
 
+# Sign all the serialization DLLs.
+# We clean the test and benchmarks projects first to avoid pointless signing.
+rm -rf  src/NodaTime.Serialization.Test/bin
+rm -rf src/NodaTime.Serialization.Benchmarks/bin
+signtool sign -a -fd SHA256 \
+  -sha1 $SIGNATURE_FINGERPRINT \
+  -t $SIGNATURE_TIMESTAMPER \
+  src/*/bin/Release/*/NodaTime.Serialization.*.dll
+
+# Create the NuGet packages
 dotnet pack --no-build src/NodaTime.Serialization.sln -o $PWD/$OUTPUT
+
+# Sign the NuGet packages
+for package in $OUTPUT/*.nupkg
+do
+  echo "Signing $package"
+  dotnet nuget sign "$package" \
+    --certificate-fingerprint $SIGNATURE_FINGERPRINT \
+    --timestamper $SIGNATURE_TIMESTAMPER
+done    
