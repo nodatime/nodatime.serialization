@@ -20,18 +20,26 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="options">The existing options to add Noda Time converters to.</param>
         /// <param name="provider">The time zone provider to use when parsing time zones and zoned date/times.</param>
         /// <returns>The original <paramref name="options"/> value, for further chaining.</returns>
-        public static JsonSerializerOptions ConfigureForNodaTime(this JsonSerializerOptions options, IDateTimeZoneProvider provider)
+        public static JsonSerializerOptions ConfigureForNodaTime(this JsonSerializerOptions options, IDateTimeZoneProvider provider) =>
+            ConfigureForNodaTime(options, new NodaJsonSettings(provider));
+
+        /// <summary>
+        /// Configures System.Text.Json with everything required to properly serialize and deserialize NodaTime data types.
+        /// </summary>
+        /// <remarks>
+        /// Any converter property in <paramref name="nodaJsonSettings"/> which is null will not be added to the list of
+        /// converters in <paramref name="options"/>.
+        /// </remarks>
+        /// <param name="options">The existing options to add Noda Time converters to.</param>
+        /// <param name="nodaJsonSettings">The <see cref="NodaJsonSettings"/> to add to the System.Text.Json options.</param>
+        /// <returns>The original <paramref name="options"/> value, for further chaining.</returns>
+        public static JsonSerializerOptions ConfigureForNodaTime(this JsonSerializerOptions options, NodaJsonSettings nodaJsonSettings)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
+            Preconditions.CheckNotNull(options, nameof(options));
+            Preconditions.CheckNotNull(nodaJsonSettings, nameof(nodaJsonSettings));
+
             // Add our converters
-            AddDefaultConverters(options.Converters, provider);
+            nodaJsonSettings.AddConverters(options.Converters);
 
             // return to allow fluent chaining if desired
             return options;
@@ -67,25 +75,6 @@ namespace NodaTime.Serialization.SystemTextJson
             }
             ReplaceExistingConverters<DateInterval>(options.Converters, NodaConverters.IsoDateIntervalConverter);
             return options;
-        }
-
-        private static void AddDefaultConverters(IList<JsonConverter> converters, IDateTimeZoneProvider provider)
-        {
-            converters.Add(NodaConverters.InstantConverter);
-            converters.Add(NodaConverters.IntervalConverter);
-            converters.Add(NodaConverters.LocalDateConverter);
-            converters.Add(NodaConverters.LocalDateTimeConverter);
-            converters.Add(NodaConverters.LocalTimeConverter);
-            converters.Add(NodaConverters.AnnualDateConverter);
-            converters.Add(NodaConverters.DateIntervalConverter);
-            converters.Add(NodaConverters.OffsetConverter);
-            converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
-            converters.Add(NodaConverters.DurationConverter);
-            converters.Add(NodaConverters.RoundtripPeriodConverter);
-            converters.Add(NodaConverters.OffsetDateTimeConverter);
-            converters.Add(NodaConverters.OffsetDateConverter);
-            converters.Add(NodaConverters.OffsetTimeConverter);
-            converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
         }
 
         private static void ReplaceExistingConverters<T>(IList<JsonConverter> converters, JsonConverter newConverter)
