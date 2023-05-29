@@ -93,7 +93,7 @@ public sealed class NodaJsonSettings
     public JsonConverter OffsetDateTimeConverter { get; set; }
 
     /// <summary>
-    /// The converter used for <see cref="ZonedDateTimeConverter"/> values.
+    /// The converter used for <see cref="ZonedDateTime"/> values.
     /// </summary>
     public JsonConverter ZonedDateTimeConverter { get; set; }
 
