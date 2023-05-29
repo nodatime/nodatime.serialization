@@ -1,4 +1,4 @@
-[![GitHub Actions status](https://img.shields.io/github/workflow/status/nodatime/nodatime.serialization/Build%20push)](https://github.com/nodatime/nodatime.serialization/actions?query=workflow%3A%22Build+push%22)
+[![Github Actions status](https://img.shields.io/github/actions/workflow/status/nodatime/nodatime.serialization/push.yaml?branch=main)](https://github.com/nodatime/nodatime.serialization/actions?query=workflow%3A%22Build+push%22)
 
 # Noda Time serialization
 
