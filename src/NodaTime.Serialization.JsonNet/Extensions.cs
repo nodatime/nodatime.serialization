@@ -35,11 +35,11 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Configures Json.NET with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
-        /// <param name="settings">The existing settings to add Noda Time converters to.</param>
         /// <remarks>
         /// Any converter property in <paramref name="nodaJsonSettings"/> which is null will not be added to the list of
         /// converters in <paramref name="settings"/>.
         /// </remarks>
+        /// <param name="settings">The existing settings to add Noda Time converters to.</param>
         /// <param name="nodaJsonSettings">The <see cref="NodaJsonSettings"/> to add to the Json.NET settings.</param>
         /// <returns>The original <paramref name="settings"/> value, for further chaining.</returns>
         public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings, NodaJsonSettings nodaJsonSettings)
