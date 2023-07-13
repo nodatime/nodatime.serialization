@@ -23,6 +23,13 @@ public sealed class NodaTimeDefaultJsonConverterAttribute : JsonConverterAttribu
 {
     private static readonly Dictionary<Type, JsonConverter> converters;
 
+    /// <summary>
+    /// Constructs an instance of the attribute.
+    /// </summary>
+    public NodaTimeDefaultJsonConverterAttribute()
+    {
+    }
+
     static NodaTimeDefaultJsonConverterAttribute()
     {
         converters = new()
