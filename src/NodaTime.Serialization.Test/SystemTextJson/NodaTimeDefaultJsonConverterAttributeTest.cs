@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace NodaTime.Serialization.Test.SystemTextJson;
 
-public class NodaTimeDefaultConverterAttributeTest
+public class NodaTimeDefaultJsonConverterAttributeTest
 {
     [Test]
     public void Roundtrip()
