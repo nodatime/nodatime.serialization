@@ -24,5 +24,8 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- Always enable InheritDoc, even in debug builds -->
+    <InheritDocEnabled>true</InheritDocEnabled>
   </PropertyGroup>
 </Project>
