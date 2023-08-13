@@ -4,7 +4,6 @@
 
 using NodaTime.Utility;
 using System;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -37,7 +36,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// Returns whether or not this converter supports the given type.
         /// </summary>
         /// <param name="objectType">The type to check for compatibility.</param>
-        /// <returns>True if the given type is supported by this converter (including the nullable form for
+        /// <returns>True if the given type is supported by this converter (not including the nullable form for
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType) =>
             objectType == typeof(T) || (CheckAssignableFrom && typeof(T).IsAssignableFrom(objectType));
