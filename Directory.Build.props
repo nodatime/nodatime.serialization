@@ -17,7 +17,6 @@
     <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
     <PackageProjectUrl>https://nodatime.org/</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
     <Authors>The Noda Time authors</Authors>
 
     <!-- Properties to get SourceLink to work -->
