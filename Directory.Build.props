@@ -16,6 +16,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/nodatime/nodatime.serialization</RepositoryUrl>
     <Authors>The Noda Time authors</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <!-- Properties to get SourceLink to work -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
