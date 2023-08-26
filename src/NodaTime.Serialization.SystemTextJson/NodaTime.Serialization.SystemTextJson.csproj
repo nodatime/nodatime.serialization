@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and System.Text.Json</Description>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <PackageTags>nodatime;json</PackageTags>
   </PropertyGroup>
