@@ -27,4 +27,8 @@
     <PackageDownload Include="NETStandard.Library.Ref" Version="[2.1.0]" />
     <InheritDocReference Include="$([MSBuild]::EnsureTrailingSlash('$(NugetPackageRoot)'))netstandard.library.ref\2.1.0\ref\netstandard2.1\netstandard.xml" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="../../NuGet-README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
 </Project>
