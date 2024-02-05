@@ -172,6 +172,12 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void RoundtripDuration_WholeSeconds()
+        {
+            AssertConversions(Duration.FromHours(48), "\"2:00:00:00\"", NodaConverters.RoundtripDurationConverter);
+        }
+
+        [Test]
         public void Duration_FractionalSeconds()
         {
             AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromNanoseconds(123456789), "\"48:00:03.123456789\"", NodaConverters.DurationConverter);
@@ -181,10 +187,26 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void RoundtripDuration_FractionalSeconds()
+        {
+            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromNanoseconds(123456789), "\"2:00:00:03.123456789\"", NodaConverters.RoundtripDurationConverter);
+            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1230000), "\"2:00:00:03.123\"", NodaConverters.RoundtripDurationConverter);
+            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234000), "\"2:00:00:03.1234\"", NodaConverters.RoundtripDurationConverter);
+            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(12345), "\"2:00:00:03.0012345\"", NodaConverters.RoundtripDurationConverter);
+        }
+
+        [Test]
         public void Duration_MinAndMaxValues()
         {
             AssertConversions(Duration.FromTicks(long.MaxValue), "\"256204778:48:05.4775807\"", NodaConverters.DurationConverter);
             AssertConversions(Duration.FromTicks(long.MinValue), "\"-256204778:48:05.4775808\"", NodaConverters.DurationConverter);
+        }
+
+        [Test]
+        public void RoundtripDuration_MinAndMaxValues()
+        {
+            AssertConversions(Duration.FromTicks(long.MaxValue), "\"10675199:02:48:05.4775807\"", NodaConverters.RoundtripDurationConverter);
+            AssertConversions(Duration.FromTicks(long.MinValue), "\"-10675199:02:48:05.4775808\"", NodaConverters.RoundtripDurationConverter);
         }
 
         /// <summary>
