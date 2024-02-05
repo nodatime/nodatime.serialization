@@ -115,10 +115,16 @@ namespace NodaTime.Serialization.SystemTextJson
             new NodaDateTimeZoneConverter(provider);
 
         /// <summary>
-        /// Converter for durations.
+        /// Converter for durations using <see cref="DurationPattern.JsonRoundtrip"/>.
         /// </summary>
-        public static JsonConverter<Duration> DurationConverter { get; }
-            = new NodaPatternConverter<Duration>(DurationPattern.CreateWithInvariantCulture("-H:mm:ss.FFFFFFFFF"));
+        public static JsonConverter DurationConverter { get; }
+            = new NodaPatternConverter<Duration>(DurationPattern.JsonRoundtrip);
+
+        /// <summary>
+        /// Converter for durations using <see cref="DurationPattern.Roundtrip"/>.
+        /// </summary>
+        public static JsonConverter RoundtripDurationConverter { get; }
+            = new NodaPatternConverter<Duration>(DurationPattern.Roundtrip);
 
         /// <summary>
         /// Round-tripping converter for periods. Use this when you really want to preserve information,
