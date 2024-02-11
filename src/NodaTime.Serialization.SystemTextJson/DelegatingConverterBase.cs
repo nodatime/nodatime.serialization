@@ -30,6 +30,7 @@ namespace NodaTime.Serialization.SystemTextJson
     /// }
     /// </code>
     /// </example>
+    /// <typeparam name="T">The type of object or value handled by the converter.</typeparam>
     public abstract class DelegatingConverterBase<T> : JsonConverter<T>
     {
         private readonly JsonConverter<T> original;
