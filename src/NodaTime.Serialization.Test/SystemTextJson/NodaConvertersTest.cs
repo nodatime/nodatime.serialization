@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
@@ -51,6 +52,39 @@ namespace NodaTime.Serialization.Test.SystemText
             var value = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
             string json = "\"2012-01-02\"";
             AssertConversions(value, json, NodaConverters.LocalDateConverter);
+        }
+
+        [Test]
+        public void LocalDateDictionaryKeySerialize()
+        {
+            const string expected = "{\"2012-12-21\":\"Mayan Calendar\",\"2012-12-22\":\"We Survived\"}";
+            var actual = JsonSerializer.Serialize(new Dictionary<LocalDate, string>
+            {
+                [new LocalDate(2012, 12, 21, CalendarSystem.Iso)] = "Mayan Calendar",
+                [new LocalDate(2012, 12, 22, CalendarSystem.Iso)] = "We Survived"
+            }, new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Converters = { NodaConverters.LocalDateConverter }
+            });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void LocalDateDictionaryKeyDeserialize()
+        {
+            var expected = new Dictionary<LocalDate, string>
+            {
+                [new LocalDate(2012, 12, 21, CalendarSystem.Iso)] = "Mayan Calendar",
+                [new LocalDate(2012, 12, 22, CalendarSystem.Iso)] = "We Survived"
+            };
+            var actual = JsonSerializer.Deserialize<Dictionary<LocalDate, string>>(
+                "{\"2012-12-21\":\"Mayan Calendar\",\"2012-12-22\":\"We Survived\"}",
+                new JsonSerializerOptions
+                {
+                    Converters = { NodaConverters.LocalDateConverter }
+                });
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

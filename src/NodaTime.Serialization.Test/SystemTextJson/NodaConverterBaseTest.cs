@@ -75,7 +75,7 @@ namespace NodaTime.Serialization.Test.SystemText
                 return int.Parse(reader.GetString());
             }
 
-            protected override void WriteJsonImpl(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
+            protected override void WriteJsonImpl(Utf8JsonWriter writer, int value, JsonSerializerOptions options, bool isProperty = false)
             {
                 writer.WriteStringValue(value.ToString());
             }
@@ -88,7 +88,7 @@ namespace NodaTime.Serialization.Test.SystemText
                 return reader.GetString();
             }
 
-            protected override void WriteJsonImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+            protected override void WriteJsonImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options, bool isProperty = false)
             {
                 writer.WriteStringValue(value);
             }

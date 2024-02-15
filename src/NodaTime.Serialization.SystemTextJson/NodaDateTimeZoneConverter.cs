@@ -41,7 +41,16 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON data to.</param>
         /// <param name="value">The value to serializer.</param>
         /// <param name="options">The serialization options to use for nested serialization.</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateTimeZone value, JsonSerializerOptions options) =>
-            writer.WriteStringValue(value.Id);
+        /// <param name="isProperty">Conditional to indicate which function to invoke on the writer</param>
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateTimeZone value, JsonSerializerOptions options,
+            bool isProperty = false)
+        {
+#if NET6_0_OR_GREATER
+            if (isProperty) 
+                writer.WritePropertyName(value.Id);
+            else
+#endif
+                writer.WriteStringValue(value.Id);
+        }
     }
 }

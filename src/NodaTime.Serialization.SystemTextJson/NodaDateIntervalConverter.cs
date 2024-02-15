@@ -73,7 +73,8 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The date interval to serialize</param>
         /// <param name="options">The serializer options for embedded serialization.</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateInterval value, JsonSerializerOptions options)
+        /// <param name="isProperty">DateInterval cannot be converted to a scalar string value as such it is not a valid choice for a dictionary key</param>
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateInterval value, JsonSerializerOptions options, bool isProperty = false)
         {
             writer.WriteStartObject();
 
