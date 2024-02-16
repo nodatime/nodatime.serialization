@@ -66,11 +66,9 @@ namespace NodaTime.Serialization.SystemTextJson
         {
             validator?.Invoke(value);
             var text = pattern.Format(value);
-#if NET6_0_OR_GREATER
             if (isProperty)
                 writer.WritePropertyName(text);
             else
-#endif
                 writer.WriteStringValue(text);
         }
     }

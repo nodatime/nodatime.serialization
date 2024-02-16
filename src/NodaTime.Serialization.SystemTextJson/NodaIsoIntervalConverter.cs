@@ -54,11 +54,9 @@ namespace NodaTime.Serialization.SystemTextJson
         {
             var pattern = InstantPattern.ExtendedIso;
             var text = $"{(value.HasStart ? pattern.Format(value.Start) : "")}/{(value.HasEnd ? pattern.Format(value.End) : "")}";
-#if NET6_0_OR_GREATER
             if (isProperty)
                 writer.WritePropertyName(text);
             else
-#endif
                 writer.WriteStringValue(text);
         }
     }

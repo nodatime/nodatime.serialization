@@ -64,11 +64,9 @@ namespace NodaTime.Serialization.SystemTextJson
         {
             var pattern = LocalDatePattern.Iso;
             var text = $"{pattern.Format(value.Start)}/{pattern.Format(value.End)}";
-#if NET6_0_OR_GREATER
             if (isProperty)
                 writer.WritePropertyName(text);
             else
-#endif
                 writer.WriteStringValue(text);
         }
     }

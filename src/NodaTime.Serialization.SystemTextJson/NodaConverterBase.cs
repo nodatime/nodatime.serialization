@@ -64,7 +64,6 @@ namespace NodaTime.Serialization.SystemTextJson
             }
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// Converts the JSON stored in a reader into the relevant Noda Time type.
         /// </summary>
@@ -86,7 +85,6 @@ namespace NodaTime.Serialization.SystemTextJson
                 throw new JsonException($"Cannot convert value to {typeToConvert}", ex);
             }
         }
-#endif
 
         /// <summary>
         /// Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
@@ -110,7 +108,6 @@ namespace NodaTime.Serialization.SystemTextJson
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
             WriteJsonImpl(writer, value, options);
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// Writes the value as a string to a Utf8JsonWriter.
         /// </summary>
@@ -119,7 +116,6 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="options">The serializer options to use for any embedded serialization.</param>
         public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
             WriteJsonImpl(writer, value, options, true);
-#endif
 
         /// <summary>
         /// Implemented by concrete subclasses, this performs the final write operation for a non-null value of type T
