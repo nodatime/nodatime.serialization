@@ -45,11 +45,9 @@ namespace NodaTime.Serialization.SystemTextJson
         protected override void WriteJsonImpl(Utf8JsonWriter writer, DateTimeZone value, JsonSerializerOptions options,
             bool isProperty = false)
         {
-#if NET6_0_OR_GREATER
             if (isProperty) 
                 writer.WritePropertyName(value.Id);
             else
-#endif
                 writer.WriteStringValue(value.Id);
         }
     }
