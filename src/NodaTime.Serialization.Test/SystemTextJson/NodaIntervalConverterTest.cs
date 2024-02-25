@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Collections.Generic;
 using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
@@ -169,6 +170,16 @@ namespace NodaTime.Serialization.Test.SystemText
             var expectedInterval = new Interval(startInstant, endInstant);
             Assert.AreEqual(expectedInterval, intervalPascalCase);
             Assert.AreEqual(expectedInterval, intervalCamelCase);
+        }
+
+        [Test]
+        public void CannotUseIntervalAsPropertyName()
+        {
+            var obj = new Dictionary<Interval, string>
+            {
+                {  new Interval(NodaConstants.UnixEpoch, NodaConstants.UnixEpoch), "Test" }
+            };
+            Assert.Throws<JsonException>(() => JsonSerializer.Serialize(obj, options));
         }
 
         public class TestObject
