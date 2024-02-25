@@ -135,7 +135,7 @@ namespace NodaTime.Serialization.Test.SystemText
             string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
 
             var testObjectPascalCase = JsonSerializer.Deserialize<TestObject>(json, optionsCaseInsensitive);;
-            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive); ;
+            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive);
 
             var intervalPascalCase = testObjectPascalCase.Interval;
             var intervalCamelCase = testObjectCamelCase.Interval;

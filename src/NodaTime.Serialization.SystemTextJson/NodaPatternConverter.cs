@@ -59,7 +59,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// Writes the formatted value to the writer.
         /// </summary>
         /// <param name="writer">The writer to write JSON data to</param>
-        /// <param name="value">The value to serializer</param>
+        /// <param name="value">The value to serialize</param>
         /// <param name="options">The serializer options to use for nested serialization</param>
         /// <param name="isProperty">Conditional to indicate which function to invoke on the writer</param>
         protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options, bool isProperty = false)
