@@ -115,16 +115,26 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="value">The value to write.</param>
         /// <param name="options">The serializer options to use for any embedded serialization.</param>
         public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
-            WriteJsonImpl(writer, value, options, true);
+            WriteJsonPropertyNameImpl(writer, value, options);
 
         /// <summary>
         /// Implemented by concrete subclasses, this performs the final write operation for a non-null value of type T
         /// to JSON.
         /// </summary>
         /// <param name="writer">The writer to write JSON data to</param>
-        /// <param name="value">The value to serializer</param>
+        /// <param name="value">The value to serialize</param>
         /// <param name="options">The serializer options to use for nested serialization</param>
-        /// <param name="isProperty">Boolean flag to determine which writer method to invoke</param>
-        protected abstract void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options, bool isProperty = false);
+        protected abstract void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options);
+
+        /// <summary>
+        /// Implemented by concrete subclasses, this performs the final write operation for a non-null value of type T
+        /// to JSON, writing the value as a property name. The default implementation throws <see cref="NotImplementedException"/>
+        /// for compatibility purposes, but all concrete classes within this package override and implement the method fully.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON data to</param>
+        /// <param name="value">The value to serialize</param>
+        /// <param name="options">The serializer options to use for nested serialization</param>
+        protected virtual void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options) =>
+            throw new NotImplementedException();
     }
 }

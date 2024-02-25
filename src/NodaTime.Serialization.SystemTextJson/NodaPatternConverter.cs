@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Text;
 using System;
 using System.Text.Json;
-using NodaTime.Text;
 
 namespace NodaTime.Serialization.SystemTextJson
 {
@@ -61,15 +61,24 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON data to</param>
         /// <param name="value">The value to serialize</param>
         /// <param name="options">The serializer options to use for nested serialization</param>
-        /// <param name="isProperty">Conditional to indicate which function to invoke on the writer</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options, bool isProperty = false)
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             validator?.Invoke(value);
             var text = pattern.Format(value);
-            if (isProperty)
-                writer.WritePropertyName(text);
-            else
-                writer.WriteStringValue(text);
+            writer.WriteStringValue(text);
+        }
+
+        /// <summary>
+        /// Writes the formatted value to the writer.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON data to.</param>
+        /// <param name="value">The value to serialize.</param>
+        /// <param name="options">The serialization options to use for nested serialization.</param>
+        protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            validator?.Invoke(value);
+            var text = pattern.Format(value);
+            writer.WritePropertyName(text);
         }
     }
 }

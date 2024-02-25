@@ -49,15 +49,18 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The interval to serialize</param>
         /// <param name="options">The serializer options for embedded serialization.</param>
-        /// <param name="isProperty">Interval cannot be converted to a scalar string value as such it is not a valid choice for a dictionary key</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options, bool isProperty = false)
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options)
         {
             var pattern = InstantPattern.ExtendedIso;
             var text = $"{(value.HasStart ? pattern.Format(value.Start) : "")}/{(value.HasEnd ? pattern.Format(value.End) : "")}";
-            if (isProperty)
-                writer.WritePropertyName(text);
-            else
-                writer.WriteStringValue(text);
+            writer.WriteStringValue(text);
+        }
+
+        protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options)
+        {
+            var pattern = InstantPattern.ExtendedIso;
+            var text = $"{(value.HasStart ? pattern.Format(value.Start) : "")}/{(value.HasEnd ? pattern.Format(value.End) : "")}";
+            writer.WritePropertyName(text);
         }
     }
 }

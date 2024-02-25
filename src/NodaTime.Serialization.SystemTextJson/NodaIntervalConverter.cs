@@ -64,8 +64,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The interval to serialize</param>
         /// <param name="options">The serializer options for embedded serialization.</param>
-        /// <param name="isProperty">Interval cannot be converted to a scalar string value as such it is not a valid choice for a dictionary key</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options, bool isProperty = false)
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
@@ -83,5 +82,15 @@ namespace NodaTime.Serialization.SystemTextJson
             }
             writer.WriteEndObject();
         }
+
+        /// <summary>
+        /// Unconditionally throws an exception, as an Interval cannot be serialized as a JSON property name.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON to</param>
+        /// <param name="value">The date interval to serialize</param>
+        /// <param name="options">The serializer options for embedded serialization.</param>
+        /// <exception cref="InvalidOperationException">Always thrown to indicate this is not an appropriate method to call on this type.</exception>
+        protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, Interval value, JsonSerializerOptions options) =>
+            throw new JsonException("Cannot serialize an Interval as a JSON property name using this converter");
     }
 }

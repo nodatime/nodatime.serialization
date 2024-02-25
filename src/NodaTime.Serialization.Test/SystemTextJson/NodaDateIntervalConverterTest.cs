@@ -4,6 +4,7 @@
 
 using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Text.Json;
 using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
@@ -163,6 +164,16 @@ namespace NodaTime.Serialization.Test.SystemText
             var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
             Assert.AreEqual(expectedInterval, intervalPascalCase);
             Assert.AreEqual(expectedInterval, intervalCamelCase);
+        }
+
+        [Test]
+        public void CannotUseDateIntervalAsPropertyName()
+        {
+            var obj = new Dictionary<DateInterval, string>
+            {
+                {  new DateInterval(new LocalDate(2012, 1, 2), new LocalDate(2013, 6, 7)), "Test" }
+            };
+            Assert.Throws<JsonException>(() => JsonSerializer.Serialize(obj, options));
         }
 
         public class TestObject

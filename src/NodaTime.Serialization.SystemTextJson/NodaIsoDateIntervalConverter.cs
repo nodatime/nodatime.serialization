@@ -59,15 +59,18 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="writer">The writer to write JSON to</param>
         /// <param name="value">The date interval to serialize</param>
         /// <param name="options">The serializer options for embedded serialization.</param>
-        /// <param name="isProperty">Conditional to indicate which function to invoke on the writer</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateInterval value, JsonSerializerOptions options, bool isProperty = false)
+        protected override void WriteJsonImpl(Utf8JsonWriter writer, DateInterval value, JsonSerializerOptions options)
         {
             var pattern = LocalDatePattern.Iso;
             var text = $"{pattern.Format(value.Start)}/{pattern.Format(value.End)}";
-            if (isProperty)
-                writer.WritePropertyName(text);
-            else
-                writer.WriteStringValue(text);
+            writer.WriteStringValue(text);
+        }
+
+        protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, DateInterval value, JsonSerializerOptions options)
+        {
+            var pattern = LocalDatePattern.Iso;
+            var text = $"{pattern.Format(value.Start)}/{pattern.Format(value.End)}";
+            writer.WritePropertyName(text);
         }
     }
 }

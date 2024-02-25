@@ -75,10 +75,11 @@ namespace NodaTime.Serialization.Test.SystemText
                 return int.Parse(reader.GetString());
             }
 
-            protected override void WriteJsonImpl(Utf8JsonWriter writer, int value, JsonSerializerOptions options, bool isProperty = false)
-            {
+            protected override void WriteJsonImpl(Utf8JsonWriter writer, int value, JsonSerializerOptions options) =>
                 writer.WriteStringValue(value.ToString());
-            }
+
+            protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, int value, JsonSerializerOptions options) =>
+                writer.WritePropertyName(value.ToString());
         }
 
         private class TestStringConverter : NodaConverterBase<string>
@@ -88,10 +89,11 @@ namespace NodaTime.Serialization.Test.SystemText
                 return reader.GetString();
             }
 
-            protected override void WriteJsonImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options, bool isProperty = false)
-            {
+            protected override void WriteJsonImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options) =>
                 writer.WriteStringValue(value);
-            }
+
+            protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, string value, JsonSerializerOptions options) =>
+                writer.WritePropertyName(value);
         }
     }
 }
