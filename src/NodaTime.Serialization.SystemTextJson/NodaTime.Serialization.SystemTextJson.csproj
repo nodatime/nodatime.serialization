@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and System.Text.Json</Description>
     <Version>1.1.2</Version>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <PackageTags>nodatime;json</PackageTags>
   </PropertyGroup>
 
@@ -13,6 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="[3.0.0,4.0.0)" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 </Project>
