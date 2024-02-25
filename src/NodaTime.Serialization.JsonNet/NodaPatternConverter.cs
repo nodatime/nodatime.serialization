@@ -64,7 +64,7 @@ namespace NodaTime.Serialization.JsonNet
         /// Writes the formatted value to the writer.
         /// </summary>
         /// <param name="writer">The writer to write JSON data to</param>
-        /// <param name="value">The value to serializer</param>
+        /// <param name="value">The value to serialize</param>
         /// <param name="serializer">The serializer to use for nested serialization</param>
         protected override void WriteJsonImpl(JsonWriter writer, T value, JsonSerializer serializer)
         {

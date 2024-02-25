@@ -118,7 +118,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
 
-            var testObject = JsonSerializer.Deserialize<TestObject>(json, options); ;
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, options);
 
             Assert.True(testObject.Interval.HasStart);
             Assert.False(testObject.Interval.HasEnd);
@@ -129,7 +129,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"end\":\"2013-06-07T08:09:10Z\"}}";
 
-            var testObject = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCase); ;
+            var testObject = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCase);
 
             Assert.False(testObject.Interval.HasStart);
             Assert.True(testObject.Interval.HasEnd);
@@ -140,8 +140,8 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
 
-            var testObjectPascalCase = JsonSerializer.Deserialize<TestObject>(json, optionsCaseInsensitive); ;
-            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive); ;
+            var testObjectPascalCase = JsonSerializer.Deserialize<TestObject>(json, optionsCaseInsensitive);
+            var testObjectCamelCase = JsonSerializer.Deserialize<TestObject>(json, optionsCamelCaseCaseInsensitive);
 
             var intervalPascalCase = testObjectPascalCase.Interval;
             var intervalCamelCase = testObjectCamelCase.Interval;
