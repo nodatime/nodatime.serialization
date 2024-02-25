@@ -39,7 +39,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var jsonDateTime = JsonSerializer.Serialize(dateTime);
             var jsonInstant = JsonSerializer.Serialize(instant, new JsonSerializerOptions
             {
-                Converters = {NodaConverters.InstantConverter},
+                Converters = { NodaConverters.InstantConverter },
                 WriteIndented = false
             });
             Assert.AreEqual(jsonDateTime, jsonInstant);
@@ -83,7 +83,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var jsonDateTime = JsonSerializer.Serialize(dateTime);
             var jsonLocalDateTime = JsonSerializer.Serialize(localDateTime, new JsonSerializerOptions
             {
-                Converters = {NodaConverters.LocalDateTimeConverter},
+                Converters = { NodaConverters.LocalDateTimeConverter },
                 WriteIndented = false
             });
 
@@ -97,7 +97,7 @@ namespace NodaTime.Serialization.Test.SystemText
 
             Assert.Throws<ArgumentException>(() => JsonSerializer.Serialize(localDateTime, new JsonSerializerOptions
             {
-                Converters = {NodaConverters.LocalDateTimeConverter},
+                Converters = { NodaConverters.LocalDateTimeConverter },
                 WriteIndented = false
             }));
         }
@@ -125,7 +125,7 @@ namespace NodaTime.Serialization.Test.SystemText
             var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
             var json = JsonSerializer.Serialize(period, new JsonSerializerOptions
             {
-                Converters = {NodaConverters.NormalizingIsoPeriodConverter},
+                Converters = { NodaConverters.NormalizingIsoPeriodConverter },
                 WriteIndented = false
             });
             string expectedJson = "\"P2DT4H30M\"";
@@ -235,7 +235,7 @@ namespace NodaTime.Serialization.Test.SystemText
         [Test]
         public void Duration_ParsePartialFractionalSecondsWithTrailingZeroes()
         {
-            var parsed = JsonSerializer.Deserialize<Duration>("\"25:10:00.1234000\"", new JsonSerializerOptions{Converters = {NodaConverters.DurationConverter }});
+            var parsed = JsonSerializer.Deserialize<Duration>("\"25:10:00.1234000\"", new JsonSerializerOptions { Converters = { NodaConverters.DurationConverter } });
             Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
         }
 

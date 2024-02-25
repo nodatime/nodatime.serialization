@@ -2,34 +2,33 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
-using NodaTime.Utility;
 using NUnit.Framework;
+using System.Text.Json;
 using static NodaTime.Serialization.Test.SystemText.TestHelper;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
     public class NodaDateIntervalConverterTest
     {
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions options = new()
         {
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
         };
 
-        private readonly JsonSerializerOptions optionsCaseInsensitive = new JsonSerializerOptions
+        private readonly JsonSerializerOptions optionsCaseInsensitive = new()
         {
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
             PropertyNameCaseInsensitive = true,
         };
 
-        private readonly JsonSerializerOptions optionsCamelCase = new JsonSerializerOptions
+        private readonly JsonSerializerOptions optionsCamelCase = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
         };
 
-        private readonly JsonSerializerOptions optionsCamelCaseCaseInsensitive = new JsonSerializerOptions
+        private readonly JsonSerializerOptions optionsCamelCaseCaseInsensitive = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
