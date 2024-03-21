@@ -25,3 +25,6 @@ jobs:
     - name: Build and test
       run: |
         dotnet test src/NodaTime.Serialization.Test
+        dotnet pack src/NodaTime.Serialization.JsonNet
+        dotnet pack src/NodaTime.Serialization.Protobuf
+        dotnet pack src/NodaTime.Serialization.SystemTextJson
