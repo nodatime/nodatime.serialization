@@ -10,6 +10,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageTags>nodatime;google;protobuf</PackageTags>
     <EnablePackageValidation>true</EnablePackageValidation>
+    <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
   </PropertyGroup>
 
   <ItemGroup>
