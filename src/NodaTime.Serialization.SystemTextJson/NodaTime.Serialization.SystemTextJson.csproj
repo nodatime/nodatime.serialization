@@ -19,6 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="[3.0.0,4.0.0)" />
-    <PackageReference Include="System.Text.Json" Version="8.0.4" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 </Project>
