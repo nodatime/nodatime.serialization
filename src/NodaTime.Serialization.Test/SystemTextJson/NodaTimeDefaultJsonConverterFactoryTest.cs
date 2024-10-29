@@ -61,10 +61,7 @@ public partial class NodaTimeDefaultJsonConverterFactoryTest
         Assert.IsTrue(factory.CanConvert(type));
         var converter = factory.CreateConverter(type, default);
         Assert.NotNull(converter);
-        // The converter doesn't "advertise" that it handles nullable value types,
-        // unlike the Newtonsoft.Json version.
-        var typeToCheckForCanConvert = Nullable.GetUnderlyingType(type) ?? type;
-        Assert.IsTrue(converter.CanConvert(typeToCheckForCanConvert));
+        Assert.IsTrue(converter.CanConvert(type));
     }
 
     [Test]
@@ -89,13 +86,42 @@ public partial class NodaTimeDefaultJsonConverterFactoryTest
         Assert.AreEqual(expected, actual);
     }
 
+    // See https://github.com/nodatime/nodatime.serialization/issues/127 and
+    // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation
+    [Test]
+    public void SourceGenerationCompatibility_Nullable_NotNull()
+    {
+        var sample = new SampleDataNullable { Foo = Instant.FromUtc(2023, 8, 6, 12, 40, 12) };
+        byte[] utf8Json = JsonSerializer.SerializeToUtf8Bytes(sample, SampleJsonContext.Default.SampleDataNullable);
+        string actual = Encoding.UTF8.GetString(utf8Json);
+        string expected = "{\"Foo\":\"2023-08-06T12:40:12Z\"}";
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public void SourceGenerationCompatibility_Nullable_IsNull()
+    {
+        var sample = new SampleDataNullable { Foo =  null };
+        byte[] utf8Json = JsonSerializer.SerializeToUtf8Bytes(sample, SampleJsonContext.Default.SampleDataNullable);
+        string actual = Encoding.UTF8.GetString(utf8Json);
+        string expected = "{\"Foo\":null}";
+        Assert.AreEqual(expected, actual);
+    }
+
     public class SampleData
     {
         [JsonConverter(typeof(NodaTimeDefaultJsonConverterFactory))]
         public Instant Foo { get; set; }
     }
 
+    public class SampleDataNullable
+    {
+        [JsonConverter(typeof(NodaTimeDefaultJsonConverterFactory))]
+        public Instant? Foo { get; set; }
+    }
+
     [JsonSerializable(typeof(SampleData))]
+    [JsonSerializable(typeof(SampleDataNullable))]
     public partial class SampleJsonContext : JsonSerializerContext
     {
     }
