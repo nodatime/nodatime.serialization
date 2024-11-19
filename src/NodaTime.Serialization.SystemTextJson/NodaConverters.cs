@@ -117,13 +117,19 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <summary>
         /// Converter for durations using <see cref="DurationPattern.JsonRoundtrip"/>.
         /// </summary>
-        public static JsonConverter DurationConverter { get; }
+        public static JsonConverter DurationConverter => DurationConverterImpl;
+
+        // Note: this only exists because DurationConverter is non-generic.
+        internal static JsonConverter<Duration> DurationConverterImpl { get; }
             = new NodaPatternConverter<Duration>(DurationPattern.JsonRoundtrip);
 
         /// <summary>
         /// Converter for durations using <see cref="DurationPattern.Roundtrip"/>.
         /// </summary>
-        public static JsonConverter RoundtripDurationConverter { get; }
+        public static JsonConverter RoundtripDurationConverter => RoundtripDurationConverterImpl;
+
+        // Note: this only exists because RoundtripDurationConverter is non-generic.
+        internal static JsonConverter<Duration> RoundtripDurationConverterImpl { get; }
             = new NodaPatternConverter<Duration>(DurationPattern.Roundtrip);
 
         /// <summary>

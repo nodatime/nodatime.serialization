@@ -34,37 +34,35 @@ public sealed class NodaTimeDefaultJsonConverterFactory : JsonConverterFactory
 
     private static Dictionary<Type, JsonConverter> CreateConverterDictionary()
     {
-        var converters = new Dictionary<Type, JsonConverter>()
-        {
-            { typeof(AnnualDate), NodaConverters.AnnualDateConverter },
-            { typeof(AnnualDate?), CreateNullableConverter(NodaConverters.AnnualDateConverter) },
-            { typeof(DateInterval), NodaConverters.DateIntervalConverter },
-            { typeof(DateTimeZone), NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb) },
-            { typeof(Duration), NodaConverters.DurationConverter },
-            { typeof(Duration?), CreateNullableConverter((JsonConverter<Duration>) NodaConverters.DurationConverter) },
-            { typeof(Instant), NodaConverters.InstantConverter },
-            { typeof(Instant?), CreateNullableConverter(NodaConverters.InstantConverter) },
-            { typeof(Interval), NodaConverters.IntervalConverter },
-            { typeof(Interval?), CreateNullableConverter(NodaConverters.IntervalConverter) },
-            { typeof(LocalDate), NodaConverters.LocalDateConverter },
-            { typeof(LocalDate?), CreateNullableConverter(NodaConverters.LocalDateConverter) },
-            { typeof(LocalDateTime), NodaConverters.LocalDateTimeConverter },
-            { typeof(LocalDateTime?), CreateNullableConverter(NodaConverters.LocalDateTimeConverter) },
-            { typeof(LocalTime), NodaConverters.LocalTimeConverter },
-            { typeof(LocalTime?), CreateNullableConverter(NodaConverters.LocalTimeConverter) },
-            { typeof(Offset), NodaConverters.OffsetConverter },
-            { typeof(Offset?), CreateNullableConverter(NodaConverters.OffsetConverter) },
-            { typeof(OffsetDate), NodaConverters.OffsetDateConverter },
-            { typeof(OffsetDate?), CreateNullableConverter(NodaConverters.OffsetDateConverter) },
-            { typeof(OffsetDateTime), NodaConverters.OffsetDateTimeConverter },
-            { typeof(OffsetDateTime?), CreateNullableConverter(NodaConverters.OffsetDateTimeConverter) },
-            { typeof(OffsetTime), NodaConverters.OffsetTimeConverter },
-            { typeof(OffsetTime?), CreateNullableConverter(NodaConverters.OffsetTimeConverter) },
-            { typeof(Period), NodaConverters.RoundtripPeriodConverter },
-            { typeof(ZonedDateTime), NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb) },
-            { typeof(ZonedDateTime?), CreateNullableConverter(NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb)) }
-        };
+        var converters = new Dictionary<Type, JsonConverter>();
+
+        // Value types first, using the local function below to handle nullability.
+        Add(NodaConverters.AnnualDateConverter);
+        Add(NodaConverters.DurationConverterImpl);
+        Add(NodaConverters.InstantConverter);
+        Add(NodaConverters.IntervalConverter);
+        Add(NodaConverters.LocalDateConverter);
+        Add(NodaConverters.LocalDateTimeConverter);
+        Add(NodaConverters.LocalTimeConverter);
+        Add(NodaConverters.OffsetConverter);
+        Add(NodaConverters.OffsetDateConverter);
+        Add(NodaConverters.OffsetDateTimeConverter);
+        Add(NodaConverters.OffsetTimeConverter);
+        Add(NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb));
+
+        // Reference types
+        converters[typeof(DateInterval)] = NodaConverters.DateIntervalConverter;
+        converters[typeof(DateTimeZone)] = NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
+        converters[typeof(Period)] = NodaConverters.RoundtripPeriodConverter;
         return converters;
+
+        // Adds the converter for a value type to the dictionary,
+        // and a nullable converter for the corresponding nullable value type.
+        void Add<T>(JsonConverter<T> converter) where T : struct
+        {
+            converters[typeof(T)] = converter;
+            converters[typeof(T?)] = new NodaNullableConverter<T>(converter);
+        }
     }
 
     /// <summary>
@@ -81,10 +79,4 @@ public sealed class NodaTimeDefaultJsonConverterFactory : JsonConverterFactory
     /// <inheritdoc />
     public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options) =>
         GetConverter(typeToConvert);
-
-    /// <summary>
-    /// Helper to construct a <see cref="NodaNullableConverter{T}"/> with generic type inference at the call site.
-    /// </summary>
-    private static NodaNullableConverter<T> CreateNullableConverter<T>(JsonConverter<T> innerConverter) where T : struct
-        => new NodaNullableConverter<T>(innerConverter);
 }
