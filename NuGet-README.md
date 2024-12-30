@@ -20,5 +20,5 @@ authors) start with a prefix "NodaTime.Serialization":
   (Protocol Buffer serialization using Google.Protobuf)
   
 The source code for all these packages is at
-https://github.org/nodatime/nodatime.serialization; issues should be
+https://github.com/nodatime/nodatime.serialization issues should be
 filed in that GitHub repository.
