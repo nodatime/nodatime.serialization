@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and Json.NET.</Description>
     <!-- Update this just before a release. -->
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <!-- Update this just after a release. -->
     <PackageValidationBaselineVersion>3.1.0</PackageValidationBaselineVersion>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
