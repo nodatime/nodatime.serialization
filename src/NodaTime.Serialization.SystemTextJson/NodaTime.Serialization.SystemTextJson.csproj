@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides serialization support between Noda Time and System.Text.Json</Description>
     <!-- Update this just before a release. -->
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <!-- Update this just after a release. -->
     <PackageValidationBaselineVersion>1.2.0</PackageValidationBaselineVersion>
 
