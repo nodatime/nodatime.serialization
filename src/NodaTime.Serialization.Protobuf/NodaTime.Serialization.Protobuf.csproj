@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="[3.0.0,4.0.0)" />
-    <PackageReference Include="Google.Api.CommonProtos" Version="[2.1.0,3.0.0)" />
+    <PackageReference Include="NodaTime" />
+    <PackageReference Include="Google.Api.CommonProtos" />
   </ItemGroup>
 </Project>

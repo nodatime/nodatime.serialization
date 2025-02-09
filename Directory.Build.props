@@ -25,5 +25,8 @@
 
     <!-- Always enable InheritDoc, even in debug builds -->
     <InheritDocEnabled>true</InheritDocEnabled>
+
+    <!-- Turn on centralized package management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 </Project>
