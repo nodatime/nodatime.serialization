@@ -1,0 +1,15 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageVersion Include="NodaTime" Version="[3.0.0,4.0.0)" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Google.Api.CommonProtos" Version="[2.1.0,3.0.0)" />
+    <PackageVersion Include="System.Text.Json" Version="8.0.5" />
+
+    <PackageVersion Include="NodaTime.Testing" Version="[3.0.0, 4.0.0)" />
+    <PackageVersion Include="NUnit" Version="4.1.0" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageVersion Include="SauceControl.InheritDoc" Version="2.0.1" />
+  </ItemGroup>
+</Project>
