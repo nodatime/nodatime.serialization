@@ -4,6 +4,7 @@
 
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NodaTime.Serialization.SystemTextJson
 {
@@ -14,6 +15,20 @@ namespace NodaTime.Serialization.SystemTextJson
     /// </summary>
     internal sealed class NodaIntervalConverter : NodaConverterBase<Interval>
     {
+        /// <summary>
+        /// Instant converter to use, overriding whatever is in JsonSerializerOptions.
+        /// </summary>
+        private readonly JsonConverter<Instant> instantConverter;
+
+        internal NodaIntervalConverter() : this(null)
+        {
+        }
+
+        internal NodaIntervalConverter(JsonConverter<Instant> instantConverter)
+        {
+            this.instantConverter = instantConverter;
+        }
+
         /// <summary>
         /// Reads Start and End properties for the start and end of an interval, converting them to instants
         /// using the given serializer.
@@ -45,13 +60,13 @@ namespace NodaTime.Serialization.SystemTextJson
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
                 if (string.Equals(propertyName, startPropertyName, caseSensitivity))
                 {
-                    startInstant = options.ReadType<Instant>(ref reader);
+                    startInstant = options.ReadType<Instant>(instantConverter, ref reader);
                 }
 
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
                 if (string.Equals(propertyName, endPropertyName, caseSensitivity))
                 {
-                    endInstant = options.ReadType<Instant>(ref reader);
+                    endInstant = options.ReadType<Instant>(instantConverter, ref reader);
                 }
             }
 
@@ -72,13 +87,13 @@ namespace NodaTime.Serialization.SystemTextJson
             {
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
                 writer.WritePropertyName(startPropertyName);
-                options.WriteType(writer, value.Start);
+                options.WriteType(instantConverter, writer, value.Start);
             }
             if (value.HasEnd)
             {
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
                 writer.WritePropertyName(endPropertyName);
-                options.WriteType(writer, value.End);
+                options.WriteType(instantConverter, writer, value.End);
             }
             writer.WriteEndObject();
         }

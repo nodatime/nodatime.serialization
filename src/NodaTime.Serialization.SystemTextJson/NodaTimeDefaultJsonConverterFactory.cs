@@ -40,7 +40,7 @@ public sealed class NodaTimeDefaultJsonConverterFactory : JsonConverterFactory
         Add(NodaConverters.AnnualDateConverter);
         Add(NodaConverters.DurationConverterImpl);
         Add(NodaConverters.InstantConverter);
-        Add(NodaConverters.IntervalConverter);
+        Add(new NodaIntervalConverter(NodaConverters.InstantConverter));
         Add(NodaConverters.LocalDateConverter);
         Add(NodaConverters.LocalDateTimeConverter);
         Add(NodaConverters.LocalTimeConverter);
@@ -51,7 +51,7 @@ public sealed class NodaTimeDefaultJsonConverterFactory : JsonConverterFactory
         Add(NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb));
 
         // Reference types
-        converters[typeof(DateInterval)] = NodaConverters.DateIntervalConverter;
+        converters[typeof(DateInterval)] = new NodaDateIntervalConverter(NodaConverters.LocalDateConverter);
         converters[typeof(DateTimeZone)] = NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
         converters[typeof(Period)] = NodaConverters.RoundtripPeriodConverter;
         return converters;
