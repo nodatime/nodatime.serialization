@@ -103,12 +103,13 @@ namespace NodaTime.Serialization.SystemTextJson
         /// Retrieves the <see cref="JsonConverter"/> from <paramref name="serializerOptions"/> and deserializes the object as <typeparamref name="T"/>.
         /// </summary>
         /// <param name="serializerOptions">The serializer options to use.</param>
+        /// <param name="explicitConverter">An explicit converter to use instead of the one in the options, if not null.</param>
         /// <param name="reader">Json reader.</param>
         /// <typeparam name="T">The type of object to read.</typeparam>
         /// <returns>The deserialized object of type <typeparamref name="T"/>.</returns>
-        internal static T ReadType<T>(this JsonSerializerOptions serializerOptions, ref Utf8JsonReader reader)
+        internal static T ReadType<T>(this JsonSerializerOptions serializerOptions, JsonConverter<T> explicitConverter, ref Utf8JsonReader reader)
         {
-            var converter = (JsonConverter<T>)serializerOptions.GetConverter(typeof(T));
+            var converter = explicitConverter ?? (JsonConverter<T>)serializerOptions.GetConverter(typeof(T));
             return converter.Read(ref reader, typeof(T), serializerOptions);
         }
 
@@ -116,12 +117,13 @@ namespace NodaTime.Serialization.SystemTextJson
         /// Retrieves the <see cref="JsonConverter"/> from <paramref name="serializerOptions"/> and serializes the object as <typeparamref name="T"/>.
         /// </summary>
         /// <param name="serializerOptions">The serializer options to use.</param>
+        /// <param name="explicitConverter">An explicit converter to use instead of the one in the options, if not null.</param>
         /// <param name="writer">Json writer.</param>
         /// <param name="value">The value to serialize</param>
         /// <typeparam name="T">The type of object to write.</typeparam>
-        internal static void WriteType<T>(this JsonSerializerOptions serializerOptions, Utf8JsonWriter writer, T value)
+        internal static void WriteType<T>(this JsonSerializerOptions serializerOptions, JsonConverter<T> explicitConverter, Utf8JsonWriter writer, T value)
         {
-            var converter = (JsonConverter<T>)serializerOptions.GetConverter(typeof(T));
+            var converter = explicitConverter ?? (JsonConverter<T>)serializerOptions.GetConverter(typeof(T));
             converter.Write(writer, value, serializerOptions);
         }
     }

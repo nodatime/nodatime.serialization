@@ -4,6 +4,7 @@
 
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using NodaTime.Utility;
 
 namespace NodaTime.Serialization.SystemTextJson
@@ -15,6 +16,20 @@ namespace NodaTime.Serialization.SystemTextJson
     /// </summary>
     internal sealed class NodaDateIntervalConverter : NodaConverterBase<DateInterval>
     {
+        /// <summary>
+        /// LocalDate converter to use, overriding whatever is in JsonSerializerOptions.
+        /// </summary>
+        private readonly JsonConverter<LocalDate> localDateConverter;
+
+        internal NodaDateIntervalConverter() : this(null)
+        {
+        }
+
+        internal NodaDateIntervalConverter(JsonConverter<LocalDate> localDateConverter)
+        {
+            this.localDateConverter = localDateConverter;
+        }
+
         /// <summary>
         /// Reads Start and End properties for the start and end of a date interval, converting them to local dates
         /// using the given serializer.
@@ -44,13 +59,13 @@ namespace NodaTime.Serialization.SystemTextJson
                 var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
                 if (string.Equals(propertyName, startPropertyName, caseSensitivity))
                 {
-                    startLocalDate = options.ReadType<LocalDate>(ref reader);
+                    startLocalDate = options.ReadType<LocalDate>(localDateConverter, ref reader);
                 }
 
                 var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
                 if (string.Equals(propertyName, endPropertyName, caseSensitivity))
                 {
-                    endLocalDate = options.ReadType<LocalDate>(ref reader);
+                    endLocalDate = options.ReadType<LocalDate>(localDateConverter, ref reader);
                 }
             }
 
@@ -79,11 +94,11 @@ namespace NodaTime.Serialization.SystemTextJson
 
             var startPropertyName = options.ResolvePropertyName(nameof(Interval.Start));
             writer.WritePropertyName(startPropertyName);
-            options.WriteType(writer, value.Start);
+            options.WriteType(localDateConverter, writer, value.Start);
 
             var endPropertyName = options.ResolvePropertyName(nameof(Interval.End));
             writer.WritePropertyName(endPropertyName);
-            options.WriteType(writer, value.End);
+            options.WriteType(localDateConverter, writer, value.End);
 
             writer.WriteEndObject();
         }
