@@ -29,7 +29,7 @@ git checkout $TAG
 export Configuration=Release
 export ContinuousIntegrationBuild=true
 
-dotnet build src/NodaTime.Serialization.sln
+dotnet build src/NodaTime.Serialization.slnx
 
 # Only test against .NET Core now; there's no conditional code here,
 # and the Protobuf project only supports 2.0 anyway.
@@ -47,7 +47,7 @@ signtool sign -a -fd SHA256 \
   src/*/bin/Release/*/NodaTime.Serialization.*.dll
 
 # Create the NuGet packages
-dotnet pack --no-build src/NodaTime.Serialization.sln -o $PWD/$OUTPUT
+dotnet pack --no-build src/NodaTime.Serialization.slnx -o $PWD/$OUTPUT
 
 # Sign the NuGet packages
 for package in $OUTPUT/*.nupkg
