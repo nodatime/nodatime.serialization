@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/MSBuild/">
+    <File Path="../Directory.Build.props" />
+    <File Path="../Directory.Build.targets" />
+  </Folder>
+  <Project Path="NodaTime.Serialization.Benchmarks/NodaTime.Serialization.Benchmarks.csproj" />
+  <Project Path="NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj" />
+  <Project Path="NodaTime.Serialization.Protobuf/NodaTime.Serialization.Protobuf.csproj" />
+  <Project Path="NodaTime.Serialization.SystemTextJson/NodaTime.Serialization.SystemTextJson.csproj" />
+  <Project Path="NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj" />
+</Solution>
