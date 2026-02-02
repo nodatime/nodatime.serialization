@@ -5,6 +5,7 @@
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
@@ -37,6 +38,15 @@ namespace NodaTime.Serialization.Test.JsonNet
             string json = "\"America/DOES_NOT_EXIST\"";
             var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
             Assert.IsInstanceOf<DateTimeZoneNotFoundException>(exception.InnerException);
+        }
+
+        [Test]
+        public void Deserialize_InvalidData()
+        {
+            string json = "0";
+            var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+            Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
+            Assert.AreEqual("Unexpected token parsing time zone. Expected String, got Integer.", exception.InnerException.Message);
         }
     }
 }
