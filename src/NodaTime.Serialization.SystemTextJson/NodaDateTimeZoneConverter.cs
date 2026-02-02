@@ -28,11 +28,11 @@ namespace NodaTime.Serialization.SystemTextJson
         protected override DateTimeZone ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             Preconditions.CheckData(reader.TokenType == JsonTokenType.String,
-                "Unexpected token parsing instant. Expected String, got {0}.",
+                "Unexpected token parsing time zone. Expected String, got {0}.",
                 reader.TokenType);
 
             var timeZoneId = reader.GetString();
-            return provider[timeZoneId];
+            return provider[timeZoneId!];
         }
 
         /// <summary>

@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NodaTime.Serialization.SystemTextJson;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using NUnit.Framework;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -66,6 +66,20 @@ namespace NodaTime.Serialization.Test.SystemText
                         Converters = {converter}
                     }));
             Assert.IsInstanceOf<DateTimeZoneNotFoundException>(exception.InnerException);
+        }
+
+        [Test]
+        public void Deserialize_InvalidData()
+        {
+            string json = "0";
+            var exception =
+                Assert.Throws<JsonException>(() =>
+                    JsonSerializer.Deserialize<DateTimeZone>(json, new JsonSerializerOptions
+                    {
+                        Converters = {converter}
+                    }));
+            Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
+            Assert.AreEqual("Unexpected token parsing time zone. Expected String, got Number.", exception.InnerException.Message);
         }
     }
 }

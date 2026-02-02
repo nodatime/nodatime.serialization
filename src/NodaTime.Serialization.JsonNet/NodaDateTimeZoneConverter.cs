@@ -31,10 +31,10 @@ namespace NodaTime.Serialization.JsonNet
         protected override DateTimeZone ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
             Preconditions.CheckData(reader.TokenType == JsonToken.String,
-                "Unexpected token parsing instant. Expected String, got {0}.",
+                "Unexpected token parsing time zone. Expected String, got {0}.",
                 reader.TokenType);
 
-            var timeZoneId = reader.Value.ToString();
+            var timeZoneId = reader.Value!.ToString();
             return provider[timeZoneId];
         }
 
