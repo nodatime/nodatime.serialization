@@ -54,6 +54,6 @@ for package in $OUTPUT/*.nupkg
 do
   echo "Signing $package"
   dotnet nuget sign "$package" \
-    --certificate-fingerprint $SIGNATURE_FINGERPRINT \
+    --certificate-subject-name="Jonathan Skeet" \
     --timestamper $SIGNATURE_TIMESTAMPER
 done    
