@@ -47,11 +47,13 @@ namespace NodaTime.Serialization.Test.SystemText
         }
 
         [Test]
-        public void Deserialize_NonNullableType_NullValue()
+        [TestCase("null")]
+        [TestCase("\"\"")]
+        public void Deserialize_NonNullableType_InvalidValue(string json)
         {
             var options = CreateOptions<TestConverter>();
-            Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("null", options));
-            Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>("\"\"", options));
+            var exception = Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>(json, options));
+            Assert.AreEqual("Cannot convert value to System.Int32", exception.Message);
         }
 
         [Test]
