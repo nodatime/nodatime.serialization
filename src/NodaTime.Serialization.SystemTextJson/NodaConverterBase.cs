@@ -49,7 +49,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="reader">The json reader to read data from.</param>
         /// <param name="objectType">The type to convert the JSON to.</param>
         /// <param name="options">A serializer options to use for any embedded deserialization.</param>
-        /// <exception cref="InvalidNodaDataException">The JSON was invalid for this converter.</exception>
+        /// <exception cref="JsonException">The JSON was invalid for this converter.</exception>
         /// <returns>The deserialized value.</returns>
         public override T Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
         {
@@ -60,7 +60,7 @@ namespace NodaTime.Serialization.SystemTextJson
             }
             catch (Exception ex)
             {
-                throw new JsonException($"Cannot convert value to {objectType}", ex);
+                throw new JsonException(null, ex);
             }
         }
 
@@ -70,7 +70,7 @@ namespace NodaTime.Serialization.SystemTextJson
         /// <param name="reader">The json reader to read data from.</param>
         /// <param name="typeToConvert">The type to convert the JSON to.</param>
         /// <param name="options">A serializer options to use for any embedded deserialization.</param>
-        /// <exception cref="InvalidNodaDataException">The JSON was invalid for this converter.</exception>
+        /// <exception cref="JsonException">The JSON was invalid for this converter.</exception>
         /// <returns>The deserialized value.</returns>
         public override T ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
@@ -82,7 +82,7 @@ namespace NodaTime.Serialization.SystemTextJson
             }
             catch (Exception ex)
             {
-                throw new JsonException($"Cannot convert value to {typeToConvert}", ex);
+                throw new JsonException(null, ex);
             }
         }
 
