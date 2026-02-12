@@ -53,7 +53,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var options = CreateOptions<TestConverter>();
             var exception = Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<int>(json, options));
-            Assert.AreEqual("Cannot convert value to System.Int32", exception.Message);
+            StringAssert.StartsWith("The JSON value could not be converted to System.Int32. Path: $ | LineNumber: 0 | BytePositionInLine: ", exception.Message);
         }
 
         [Test]

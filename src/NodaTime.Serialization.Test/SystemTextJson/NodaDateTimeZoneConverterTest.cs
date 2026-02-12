@@ -78,7 +78,7 @@ namespace NodaTime.Serialization.Test.SystemText
                     {
                         Converters = {converter}
                     }));
-            Assert.AreEqual("Cannot convert value to NodaTime.DateTimeZone", exception.Message);
+            Assert.AreEqual("The JSON value could not be converted to NodaTime.DateTimeZone. Path: $ | LineNumber: 0 | BytePositionInLine: 1.", exception.Message);
             Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
             Assert.AreEqual("Unexpected token parsing time zone. Expected String, got Number.", exception.InnerException.Message);
         }
