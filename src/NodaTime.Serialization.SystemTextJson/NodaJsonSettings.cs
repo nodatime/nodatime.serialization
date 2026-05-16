@@ -52,6 +52,11 @@ public sealed class NodaJsonSettings
     public JsonConverter AnnualDateConverter { get; set; }
 
     /// <summary>
+    /// The converter used for <see cref="YearMonth"/> values.
+    /// </summary>
+    public JsonConverter YearMonthConverter { get; set; }
+
+    /// <summary>
     /// The converter used for <see cref="DateInterval"/> values.
     /// </summary>
     public JsonConverter DateIntervalConverter { get; set; }
@@ -119,6 +124,7 @@ public sealed class NodaJsonSettings
         LocalTimeConverter = NodaConverters.LocalTimeConverter;
         LocalDateTimeConverter = NodaConverters.LocalDateTimeConverter;
         AnnualDateConverter = NodaConverters.AnnualDateConverter;
+        YearMonthConverter = NodaConverters.YearMonthConverter;
         DateIntervalConverter = NodaConverters.DateIntervalConverter;
         OffsetConverter = NodaConverters.OffsetConverter;
         DateTimeZoneConverter = NodaConverters.CreateDateTimeZoneConverter(provider);
@@ -138,6 +144,7 @@ public sealed class NodaJsonSettings
         MaybeAdd(LocalDateTimeConverter);
         MaybeAdd(LocalTimeConverter);
         MaybeAdd(AnnualDateConverter);
+        MaybeAdd(YearMonthConverter);
         MaybeAdd(DateIntervalConverter);
         MaybeAdd(OffsetConverter);
         MaybeAdd(DateTimeZoneConverter);

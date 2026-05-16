@@ -2,42 +2,44 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Collections.Generic;
 using NodaTime.Serialization.SystemTextJson;
 using NUnit.Framework;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NodaTime.Serialization.Test.SystemText
 {
-    public class NodaAnnualDateConverterTest
+    public class NodaYearMonthConverterTest
     {
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
-            Converters = { NodaConverters.AnnualDateConverter },
+            Converters = { NodaConverters.YearMonthConverter },
         };
 
         [Test]
         public void Serialize_NonNullableType()
         {
-            var annualDate = new AnnualDate(07, 01);
-            var json = JsonSerializer.Serialize(annualDate, options);
-            string expectedJson = "\"07-01\"";
+            YearMonth? yearMonth = new YearMonth(2010, 11);
+            var json = JsonSerializer.Serialize(yearMonth, options);
+            string expectedJson = "\"2010-11\"";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Serialize_NullableType_NonNullValue()
         {
-            AnnualDate? annualDate = new AnnualDate(07, 01);
-            var json = JsonSerializer.Serialize(annualDate, options);
-            string expectedJson = "\"07-01\"";
+            YearMonth? yearMonth = new YearMonth(2010, 11);
+            var json = JsonSerializer.Serialize(yearMonth, options);
+            string expectedJson = "\"2010-11\"";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            AnnualDate? annualDate = null;
-            var json = JsonSerializer.Serialize(annualDate, options);
+            YearMonth? yearMonth = null;
+            var json = JsonSerializer.Serialize(yearMonth, options);
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
@@ -45,27 +47,27 @@ namespace NodaTime.Serialization.Test.SystemText
         [Test]
         public void Deserialize_ToNonNullableType()
         {
-            string json = "\"07-01\"";
-            var annualDate = JsonSerializer.Deserialize<AnnualDate>(json, options);
-            var expectedAnnualDate = new AnnualDate(07, 01);
-            Assert.AreEqual(expectedAnnualDate, annualDate);
+            string json = "\"2010-11\"";
+            var yearMonth = JsonSerializer.Deserialize<YearMonth>(json, options);
+            var expectedYearMonth = new YearMonth(2010, 11);
+            Assert.AreEqual(expectedYearMonth, yearMonth);
         }
 
         [Test]
         public void Deserialize_ToNullableType_NonNullValue()
         {
-            string json = "\"07-01\"";
-            var annualDate = JsonSerializer.Deserialize<AnnualDate?>(json, options);
-            AnnualDate? expectedAnnualDate = new AnnualDate(07, 01);
-            Assert.AreEqual(expectedAnnualDate, annualDate);
+            string json = "\"2010-11\"";
+            var yearMonth = JsonSerializer.Deserialize<YearMonth?>(json, options);
+            YearMonth? expectedYearMonth = new YearMonth(2010, 11);
+            Assert.AreEqual(expectedYearMonth, yearMonth);
         }
 
         [Test]
         public void Deserialize_ToNullableType_NullValue()
         {
             string json = "null";
-            var annualDate = JsonSerializer.Deserialize<AnnualDate?>(json, options);
-            Assert.IsNull(annualDate);
+            var yearMonth = JsonSerializer.Deserialize<YearMonth?>(json, options);
+            Assert.IsNull(yearMonth);
         }
 
         [Test]
@@ -73,7 +75,7 @@ namespace NodaTime.Serialization.Test.SystemText
         {
             var jsonSettings = new NodaJsonSettings();
             var configuredOptions = new JsonSerializerOptions().ConfigureForNodaTime(jsonSettings);
-            Assert.AreEqual("\"07-01\"", JsonSerializer.Serialize(new AnnualDate(07,01), configuredOptions));
+            Assert.AreEqual("\"2010-11\"", JsonSerializer.Serialize(new YearMonth(2010, 11), configuredOptions));
         }
     }
 }
