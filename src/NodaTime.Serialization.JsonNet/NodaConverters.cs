@@ -49,6 +49,12 @@ namespace NodaTime.Serialization.JsonNet
             = new NodaPatternConverter<AnnualDate>(AnnualDatePattern.Iso);
 
         /// <summary>
+        /// Converter for year month values, using an ISO-8601 compatible pattern for the year and month parts.
+        /// </summary>
+        public static JsonConverter YearMonthConverter { get; }
+            = new NodaPatternConverter<YearMonth>(YearMonthPattern.Iso);
+
+        /// <summary>
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
         /// </summary>
         public static JsonConverter IntervalConverter { get; } = new NodaIntervalConverter();

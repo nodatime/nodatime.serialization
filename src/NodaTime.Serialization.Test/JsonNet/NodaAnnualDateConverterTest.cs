@@ -39,8 +39,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            AnnualDate? instant = null;
-            var json = JsonConvert.SerializeObject(instant, Formatting.None, settings);
+            AnnualDate? annualDate = null;
+            var json = JsonConvert.SerializeObject(annualDate, Formatting.None, settings);
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }

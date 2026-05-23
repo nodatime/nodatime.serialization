@@ -67,5 +67,13 @@ namespace NodaTime.Serialization.Test.SystemText
             var annualDate = JsonSerializer.Deserialize<AnnualDate?>(json, options);
             Assert.IsNull(annualDate);
         }
+
+        [Test]
+        public void NodaJsonSettings_ShouldAddConverter()
+        {
+            var jsonSettings = new NodaJsonSettings();
+            var configuredOptions = new JsonSerializerOptions().ConfigureForNodaTime(jsonSettings);
+            Assert.AreEqual("\"07-01\"", JsonSerializer.Serialize(new AnnualDate(07,01), configuredOptions));
+        }
     }
 }
