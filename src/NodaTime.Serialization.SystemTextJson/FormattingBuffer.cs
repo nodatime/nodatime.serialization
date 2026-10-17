@@ -39,6 +39,10 @@ internal static class FormattingBuffer
 
     internal static void ReleaseBuilder(StringBuilder builder)
     {
+        if (cachedChars is char[] chars)
+        {
+            Array.Clear(chars, 0, chars.Length);
+        }
         if (builder.Capacity <= MaxCachedCapacity)
         {
             builder.Clear();
