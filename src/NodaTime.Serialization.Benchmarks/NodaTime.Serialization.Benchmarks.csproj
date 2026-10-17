@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj" />
+    <ProjectReference Include="..\NodaTime.Serialization.SystemTextJson\NodaTime.Serialization.SystemTextJson.csproj" />
     <PackageReference Include="BenchmarkDotNet" />
   </ItemGroup>
 </Project>

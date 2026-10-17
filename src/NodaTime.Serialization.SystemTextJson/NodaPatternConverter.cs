@@ -64,8 +64,16 @@ namespace NodaTime.Serialization.SystemTextJson
         protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             validator?.Invoke(value);
-            var text = pattern.Format(value);
-            writer.WriteStringValue(text);
+            var builder = FormattingBuffer.AcquireBuilder();
+            try
+            {
+                pattern.AppendFormat(value, builder);
+                writer.WriteStringValue(FormattingBuffer.AsSpan(builder));
+            }
+            finally
+            {
+                FormattingBuffer.ReleaseBuilder(builder);
+            }
         }
 
         /// <summary>
@@ -77,8 +85,16 @@ namespace NodaTime.Serialization.SystemTextJson
         protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             validator?.Invoke(value);
-            var text = pattern.Format(value);
-            writer.WritePropertyName(text);
+            var builder = FormattingBuffer.AcquireBuilder();
+            try
+            {
+                pattern.AppendFormat(value, builder);
+                writer.WritePropertyName(FormattingBuffer.AsSpan(builder));
+            }
+            finally
+            {
+                FormattingBuffer.ReleaseBuilder(builder);
+            }
         }
     }
 }
