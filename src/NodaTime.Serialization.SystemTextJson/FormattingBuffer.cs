@@ -53,15 +53,12 @@ internal static class FormattingBuffer
     internal static ReadOnlySpan<char> AsSpan(StringBuilder builder)
     {
         int length = builder.Length;
-        var chars = cachedChars;
-        if (chars is null || chars.Length < length)
+        if (length > MaxCachedCapacity)
         {
-            chars = new char[Math.Max(length, 64)];
-            if (chars.Length <= MaxCachedCapacity)
-            {
-                cachedChars = chars;
-            }
+            // Not caching large builders, so just convert to string and return as a span.
+            return builder.ToString().AsSpan();
         }
+        var chars = cachedChars ??= new char[MaxCachedCapacity];
         builder.CopyTo(0, chars, 0, length);
         return new ReadOnlySpan<char>(chars, 0, length);
     }
