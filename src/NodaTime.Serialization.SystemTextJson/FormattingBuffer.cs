@@ -23,8 +23,9 @@ internal static class FormattingBuffer
     private static char[] cachedChars;
 
     /// <summary>
-    /// Returns an empty builder. The cached builder is handed out at most once at a time, so nested use
-    /// on the same thread gets a new builder instead of sharing it.
+    /// Returns an empty builder for the current thread. Pattern formatting and writing to
+    /// <see cref="System.Text.Json.Utf8JsonWriter"/> are non-reentrant, so at most one builder
+    /// is in use per thread at any time.
     /// </summary>
     internal static StringBuilder AcquireBuilder()
     {
@@ -39,15 +40,20 @@ internal static class FormattingBuffer
 
     internal static void ReleaseBuilder(StringBuilder builder)
     {
+        var length = builder.Length;
+        if (length > MaxCachedCapacity)
+        {
+            // The builder is too large to cache, so we just return letting it be garbage collected.
+            // No need to clear cachedChars either, since it hasn't been used.
+            return;
+        }
+
         if (cachedChars is char[] chars)
         {
-            Array.Clear(chars, 0, chars.Length);
+            Array.Clear(chars, 0, length);
         }
-        if (builder.Capacity <= MaxCachedCapacity)
-        {
-            builder.Clear();
-            cachedBuilder = builder;
-        }
+        builder.Clear();
+        cachedBuilder = builder;
     }
 
     /// <summary>
@@ -56,12 +62,13 @@ internal static class FormattingBuffer
     /// </summary>
     internal static ReadOnlySpan<char> AsSpan(StringBuilder builder)
     {
-        int length = builder.Length;
+        var length = builder.Length;
         if (length > MaxCachedCapacity)
         {
             // Not caching large builders, so just convert to string and return as a span.
             return builder.ToString().AsSpan();
         }
+        
         var chars = cachedChars ??= new char[MaxCachedCapacity];
         builder.CopyTo(0, chars, 0, length);
         return new ReadOnlySpan<char>(chars, 0, length);
