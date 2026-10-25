@@ -4,49 +4,48 @@
 
 using System;
 
-namespace NodaTime.Serialization.Protobuf
+namespace NodaTime.Serialization.Protobuf;
+
+/// <summary>
+/// Helper static methods for argument/state validation. (Just the subset used within this library.)
+/// </summary>
+internal static class Preconditions
 {
-    /// <summary>
-    /// Helper static methods for argument/state validation. (Just the subset used within this library.)
-    /// </summary>
-    internal static class Preconditions
+    internal static T CheckNotNull<T>(T argument, string paramName) where T : class
+        => argument ?? throw new ArgumentNullException(paramName);
+
+    internal static void CheckArgument(bool expression, string parameter, string message)
     {
-        internal static T CheckNotNull<T>(T argument, string paramName) where T : class
-            => argument ?? throw new ArgumentNullException(paramName);
-
-        internal static void CheckArgument(bool expression, string parameter, string message)
+        if (!expression)
         {
-            if (!expression)
-            {
-                throw new ArgumentException(message, parameter);
-            }
+            throw new ArgumentException(message, parameter);
         }
+    }
 
-        internal static void CheckArgument<T>(bool expression, string parameter, string messageFormat, T messageArg)
+    internal static void CheckArgument<T>(bool expression, string parameter, string messageFormat, T messageArg)
+    {
+        if (!expression)
         {
-            if (!expression)
-            {
-                string message = string.Format(messageFormat, messageArg);
-                throw new ArgumentException(message, parameter);
-            }
+            string message = string.Format(messageFormat, messageArg);
+            throw new ArgumentException(message, parameter);
         }
+    }
 
-        internal static void CheckArgument<T1, T2>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2)
+    internal static void CheckArgument<T1, T2>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2)
+    {
+        if (!expression)
         {
-            if (!expression)
-            {
-                string message = string.Format(messageFormat, messageArg1, messageArg2);
-                throw new ArgumentException(message, parameter);
-            }
+            string message = string.Format(messageFormat, messageArg1, messageArg2);
+            throw new ArgumentException(message, parameter);
         }
+    }
 
-        internal static void CheckArgument<T1, T2, T3>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2, T3 messageArg3)
+    internal static void CheckArgument<T1, T2, T3>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2, T3 messageArg3)
+    {
+        if (!expression)
         {
-            if (!expression)
-            {
-                string message = string.Format(messageFormat, messageArg1, messageArg2, messageArg3);
-                throw new ArgumentException(message, parameter);
-            }
+            string message = string.Format(messageFormat, messageArg1, messageArg2, messageArg3);
+            throw new ArgumentException(message, parameter);
         }
     }
 }

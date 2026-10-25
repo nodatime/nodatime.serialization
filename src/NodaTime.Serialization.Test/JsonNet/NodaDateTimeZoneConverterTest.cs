@@ -8,45 +8,44 @@ using NodaTime.TimeZones;
 using NodaTime.Utility;
 using NUnit.Framework;
 
-namespace NodaTime.Serialization.Test.JsonNet
+namespace NodaTime.Serialization.Test.JsonNet;
+
+public class NodaDateTimeZoneConverterTest
 {
-    public class NodaDateTimeZoneConverterTest
+    private readonly JsonConverter converter = NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
+
+    [Test]
+    public void Serialize()
     {
-        private readonly JsonConverter converter = NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
+        var dateTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+        var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
+        string expectedJson = "\"America/Los_Angeles\"";
+        Assert.AreEqual(expectedJson, json);
+    }
 
-        [Test]
-        public void Serialize()
-        {
-            var dateTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
-            var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
-            string expectedJson = "\"America/Los_Angeles\"";
-            Assert.AreEqual(expectedJson, json);
-        }
+    [Test]
+    public void Deserialize()
+    {
+        string json = "\"America/Los_Angeles\"";
+        var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
+        var expectedDateTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+        Assert.AreEqual(expectedDateTimeZone, dateTimeZone);
+    }
 
-        [Test]
-        public void Deserialize()
-        {
-            string json = "\"America/Los_Angeles\"";
-            var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
-            var expectedDateTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
-            Assert.AreEqual(expectedDateTimeZone, dateTimeZone);
-        }
+    [Test]
+    public void Deserialize_TimeZoneNotFound()
+    {
+        string json = "\"America/DOES_NOT_EXIST\"";
+        var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+        Assert.IsInstanceOf<DateTimeZoneNotFoundException>(exception.InnerException);
+    }
 
-        [Test]
-        public void Deserialize_TimeZoneNotFound()
-        {
-            string json = "\"America/DOES_NOT_EXIST\"";
-            var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
-            Assert.IsInstanceOf<DateTimeZoneNotFoundException>(exception.InnerException);
-        }
-
-        [Test]
-        public void Deserialize_InvalidData()
-        {
-            string json = "0";
-            var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
-            Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
-            Assert.AreEqual("Unexpected token parsing time zone. Expected String, got Integer.", exception.InnerException.Message);
-        }
+    [Test]
+    public void Deserialize_InvalidData()
+    {
+        string json = "0";
+        var exception = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+        Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
+        Assert.AreEqual("Unexpected token parsing time zone. Expected String, got Integer.", exception.InnerException.Message);
     }
 }

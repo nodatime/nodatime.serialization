@@ -5,31 +5,30 @@
 using System;
 using NodaTime.Utility;
 
-namespace NodaTime.Serialization.SystemTextJson
+namespace NodaTime.Serialization.SystemTextJson;
+
+/// <summary>
+/// Helper static methods for argument/state validation. (Just the subset used within this library.)
+/// </summary>
+internal static class Preconditions
 {
-    /// <summary>
-    /// Helper static methods for argument/state validation. (Just the subset used within this library.)
-    /// </summary>
-    internal static class Preconditions
+    internal static T CheckNotNull<T>(T argument, string paramName) =>
+        argument == null ? throw new ArgumentNullException(paramName) : argument;
+
+    internal static void CheckArgument(bool expression, string parameter, string message)
     {
-        internal static T CheckNotNull<T>(T argument, string paramName) =>
-            argument == null ? throw new ArgumentNullException(paramName) : argument;
-
-        internal static void CheckArgument(bool expression, string parameter, string message)
+        if (!expression)
         {
-            if (!expression)
-            {
-                throw new ArgumentException(message, parameter);
-            }
+            throw new ArgumentException(message, parameter);
         }
+    }
 
-        internal static void CheckData<T>(bool expression, string messageFormat, T messageArg)
+    internal static void CheckData<T>(bool expression, string messageFormat, T messageArg)
+    {
+        if (!expression)
         {
-            if (!expression)
-            {
-                string message = string.Format(messageFormat, messageArg);
-                throw new InvalidNodaDataException(message);
-            }
+            string message = string.Format(messageFormat, messageArg);
+            throw new InvalidNodaDataException(message);
         }
     }
 }
