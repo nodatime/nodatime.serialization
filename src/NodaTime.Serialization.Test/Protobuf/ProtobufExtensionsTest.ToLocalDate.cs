@@ -7,8 +7,6 @@ using NodaTime.Serialization.Protobuf;
 using NUnit.Framework;
 using System;
 
-using ProtoDayOfWeek = Google.Type.DayOfWeek;
-
 namespace NodaTime.Serialization.Test.Protobuf;
 
 public partial class ProtobufExtensionsTest

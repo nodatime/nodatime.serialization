@@ -2,12 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using NodaTime.Serialization.SystemTextJson;
 using NodaTime.Text;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace NodaTime.Serialization.Test.SystemText;
 

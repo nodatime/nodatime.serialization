@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Text.Json;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Text.Json;
 
 namespace NodaTime.Serialization.SystemTextJson;
 

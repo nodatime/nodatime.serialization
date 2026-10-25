@@ -4,7 +4,6 @@
 
 using BenchmarkDotNet.Attributes;
 using NodaTime.Serialization.SystemTextJson;
-using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using BenchmarkDotNet.Running;
-using System.Reflection;
 
 namespace NodaTime.Serialization.Benchmarks;
 

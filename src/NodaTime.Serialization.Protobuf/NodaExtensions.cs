@@ -6,8 +6,8 @@ using Google.Protobuf.WellKnownTypes;
 using Google.Type;
 using System;
 using NodaDuration = NodaTime.Duration;
-using ProtobufDuration = Google.Protobuf.WellKnownTypes.Duration;
 using ProtobufDayOfWeek = Google.Type.DayOfWeek;
+using ProtobufDuration = Google.Protobuf.WellKnownTypes.Duration;
 
 namespace NodaTime.Serialization.Protobuf;
 
