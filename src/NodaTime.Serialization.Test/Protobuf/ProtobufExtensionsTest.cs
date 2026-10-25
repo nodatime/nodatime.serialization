@@ -5,16 +5,15 @@
 using NUnit.Framework;
 using static NodaTime.Serialization.Protobuf.ProtobufExtensions;
 
-namespace NodaTime.Serialization.Test.Protobuf
+namespace NodaTime.Serialization.Test.Protobuf;
+
+public partial class ProtobufExtensionsTest
 {
-    public partial class ProtobufExtensionsTest
+    [Test]
+    public void MinMaxValidTimestampSeconds()
     {
-        [Test]
-        public void MinMaxValidTimestampSeconds()
-        {
-            // These are useful to have as compile-time constants, but let's validate them.
-            Assert.AreEqual(MinValidTimestampSeconds, Instant.FromUtc(1, 1, 1, 0, 0).ToUnixTimeSeconds());
-            Assert.AreEqual(MaxValidTimestampSeconds, Instant.FromUtc(9999, 12, 31, 23, 59, 59).ToUnixTimeSeconds());
-        }
+        // These are useful to have as compile-time constants, but let's validate them.
+        Assert.AreEqual(MinValidTimestampSeconds, Instant.FromUtc(1, 1, 1, 0, 0).ToUnixTimeSeconds());
+        Assert.AreEqual(MaxValidTimestampSeconds, Instant.FromUtc(9999, 12, 31, 23, 59, 59).ToUnixTimeSeconds());
     }
 }

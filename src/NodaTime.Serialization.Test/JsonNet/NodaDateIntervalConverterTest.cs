@@ -9,140 +9,139 @@ using Newtonsoft.Json.Serialization;
 using NodaTime.Serialization.JsonNet;
 using NUnit.Framework;
 
-namespace NodaTime.Serialization.Test.JsonNet
+namespace NodaTime.Serialization.Test.JsonNet;
+
+public class NodaDateIntervalConverterTest
 {
-    public class NodaDateIntervalConverterTest
+    private readonly JsonSerializerSettings settings = new JsonSerializerSettings
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings
-        {
-            Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
-            DateParseHandling = DateParseHandling.None
-        };
+        Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
+        DateParseHandling = DateParseHandling.None
+    };
 
-        private readonly JsonSerializerSettings settingsCamelCase = new JsonSerializerSettings
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
-            DateParseHandling = DateParseHandling.None
-        };
+    private readonly JsonSerializerSettings settingsCamelCase = new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        Converters = { NodaConverters.DateIntervalConverter, NodaConverters.LocalDateConverter },
+        DateParseHandling = DateParseHandling.None
+    };
 
-        [Test]
-        public void RoundTrip()
-        {
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var dateInterval = new DateInterval(startLocalDate, endLocalDate);
-            AssertConversions(dateInterval, "{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}", settings);
-        }
+    [Test]
+    public void RoundTrip()
+    {
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var dateInterval = new DateInterval(startLocalDate, endLocalDate);
+        AssertConversions(dateInterval, "{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}", settings);
+    }
 
-        [Test]
-        public void RoundTrip_CamelCase()
-        {
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var dateInterval = new DateInterval(startLocalDate, endLocalDate);
-            AssertConversions(dateInterval, "{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}", settingsCamelCase);
-        }
+    [Test]
+    public void RoundTrip_CamelCase()
+    {
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var dateInterval = new DateInterval(startLocalDate, endLocalDate);
+        AssertConversions(dateInterval, "{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}", settingsCamelCase);
+    }
 
-        [Test]
-        public void Serialize_InObject()
-        {
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var dateInterval = new DateInterval(startLocalDate, endLocalDate);
+    [Test]
+    public void Serialize_InObject()
+    {
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var dateInterval = new DateInterval(startLocalDate, endLocalDate);
 
-            var testObject = new TestObject { Interval = dateInterval };
+        var testObject = new TestObject { Interval = dateInterval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
+        var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
 
-            string expectedJson = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
-            Assert.AreEqual(expectedJson, json);
-        }
+        string expectedJson = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
+        Assert.AreEqual(expectedJson, json);
+    }
 
-        [Test]
-        public void Serialize_InObject_CamelCase()
-        {
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var dateInterval = new DateInterval(startLocalDate, endLocalDate);
+    [Test]
+    public void Serialize_InObject_CamelCase()
+    {
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var dateInterval = new DateInterval(startLocalDate, endLocalDate);
 
-            var testObject = new TestObject { Interval = dateInterval };
+        var testObject = new TestObject { Interval = dateInterval };
 
-            var json = JsonConvert.SerializeObject(testObject, Formatting.None, settingsCamelCase);
+        var json = JsonConvert.SerializeObject(testObject, Formatting.None, settingsCamelCase);
 
-            string expectedJson = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
-            Assert.AreEqual(expectedJson, json);
-        }
+        string expectedJson = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
+        Assert.AreEqual(expectedJson, json);
+    }
 
-        [Test]
-        public void Deserialize_InObject()
-        {
-            string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
+    [Test]
+    public void Deserialize_InObject()
+    {
+        string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
+        var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
 
-            var interval = testObject.Interval;
+        var interval = testObject.Interval;
 
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
-            Assert.AreEqual(expectedInterval, interval);
-        }
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
+        Assert.AreEqual(expectedInterval, interval);
+    }
 
-        [Test]
-        public void Deserialize_InObject_CamelCase()
-        {
-            string json = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
+    [Test]
+    public void Deserialize_InObject_CamelCase()
+    {
+        string json = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
 
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+        var testObject = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
 
-            var interval = testObject.Interval;
+        var interval = testObject.Interval;
 
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
-            Assert.AreEqual(expectedInterval, interval);
-        }
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
+        Assert.AreEqual(expectedInterval, interval);
+    }
 
-        [Test]
-        public void Deserialize_CaseInsensitive()
-        {
-            string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
+    [Test]
+    public void Deserialize_CaseInsensitive()
+    {
+        string json = "{\"Interval\":{\"Start\":\"2012-01-02\",\"End\":\"2013-06-07\"}}";
 
-            var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
-            var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+        var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
+        var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
 
-            var intervalPascalCase = testObjectPascalCase.Interval;
-            var intervalCamelCase = testObjectCamelCase.Interval;
+        var intervalPascalCase = testObjectPascalCase.Interval;
+        var intervalCamelCase = testObjectCamelCase.Interval;
 
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
-            Assert.AreEqual(expectedInterval, intervalPascalCase);
-            Assert.AreEqual(expectedInterval, intervalCamelCase);
-        }
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
+        Assert.AreEqual(expectedInterval, intervalPascalCase);
+        Assert.AreEqual(expectedInterval, intervalCamelCase);
+    }
 
-        [Test]
-        public void Deserialize_CaseInsensitive_CamelCase()
-        {
-            string json = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
+    [Test]
+    public void Deserialize_CaseInsensitive_CamelCase()
+    {
+        string json = "{\"interval\":{\"start\":\"2012-01-02\",\"end\":\"2013-06-07\"}}";
 
-            var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
-            var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
+        var testObjectPascalCase = JsonConvert.DeserializeObject<TestObject>(json, settings);
+        var testObjectCamelCase = JsonConvert.DeserializeObject<TestObject>(json, settingsCamelCase);
 
-            var intervalPascalCase = testObjectPascalCase.Interval;
-            var intervalCamelCase = testObjectCamelCase.Interval;
+        var intervalPascalCase = testObjectPascalCase.Interval;
+        var intervalCamelCase = testObjectCamelCase.Interval;
 
-            var startLocalDate = new LocalDate(2012, 1, 2);
-            var endLocalDate = new LocalDate(2013, 6, 7);
-            var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
-            Assert.AreEqual(expectedInterval, intervalPascalCase);
-            Assert.AreEqual(expectedInterval, intervalCamelCase);
-        }
+        var startLocalDate = new LocalDate(2012, 1, 2);
+        var endLocalDate = new LocalDate(2013, 6, 7);
+        var expectedInterval = new DateInterval(startLocalDate, endLocalDate);
+        Assert.AreEqual(expectedInterval, intervalPascalCase);
+        Assert.AreEqual(expectedInterval, intervalCamelCase);
+    }
 
-        public class TestObject
-        {
-            public DateInterval Interval { get; set; }
-        }
+    public class TestObject
+    {
+        public DateInterval Interval { get; set; }
     }
 }

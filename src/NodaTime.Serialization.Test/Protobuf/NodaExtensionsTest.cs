@@ -2,9 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-namespace NodaTime.Serialization.Test.Protobuf
+namespace NodaTime.Serialization.Test.Protobuf;
+
+public partial class NodaExtensionsTest
 {
-    public partial class NodaExtensionsTest
-    {
-    }
 }

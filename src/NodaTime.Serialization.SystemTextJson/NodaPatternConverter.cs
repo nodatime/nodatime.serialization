@@ -6,95 +6,94 @@ using NodaTime.Text;
 using System;
 using System.Text.Json;
 
-namespace NodaTime.Serialization.SystemTextJson
+namespace NodaTime.Serialization.SystemTextJson;
+
+/// <summary>
+/// A JSON converter for types which can be represented by a single string value, parsed or formatted
+/// from an <see cref="IPattern{T}"/>.
+/// </summary>
+/// <typeparam name="T">The type to convert to/from JSON.</typeparam>
+public sealed class NodaPatternConverter<T> : NodaConverterBase<T>
 {
+    private readonly IPattern<T> pattern;
+    private readonly Action<T> validator;
+
     /// <summary>
-    /// A JSON converter for types which can be represented by a single string value, parsed or formatted
-    /// from an <see cref="IPattern{T}"/>.
+    /// Creates a new instance with a pattern and no validator.
     /// </summary>
-    /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
-    public sealed class NodaPatternConverter<T> : NodaConverterBase<T>
+    /// <param name="pattern">The pattern to use for parsing and formatting.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+    public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
     {
-        private readonly IPattern<T> pattern;
-        private readonly Action<T> validator;
+    }
 
-        /// <summary>
-        /// Creates a new instance with a pattern and no validator.
-        /// </summary>
-        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
+    /// <summary>
+    /// Creates a new instance with a pattern and an optional validator. The validator will be called before each
+    /// value is written, and may throw an exception to indicate that the value cannot be serialized.
+    /// </summary>
+    /// <param name="pattern">The pattern to use for parsing and formatting.</param>
+    /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+    public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)
+    {
+        Preconditions.CheckNotNull(pattern, nameof(pattern));
+        this.pattern = pattern;
+        this.validator = validator;
+    }
+
+    /// <summary>
+    /// Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
+    /// a value of type T.
+    /// </summary>
+    /// <param name="reader">The JSON reader to pull data from</param>
+    /// <param name="options">The serializer options to use for nested serialization</param>
+    /// <returns>The deserialized value of type T.</returns>
+
+    protected override T ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        string text = reader.GetString();
+        return pattern.Parse(text).Value;
+    }
+
+    /// <summary>
+    /// Writes the formatted value to the writer.
+    /// </summary>
+    /// <param name="writer">The writer to write JSON data to</param>
+    /// <param name="value">The value to serialize</param>
+    /// <param name="options">The serializer options to use for nested serialization</param>
+    protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+    {
+        validator?.Invoke(value);
+        var builder = FormattingBuffer.AcquireBuilder();
+        try
         {
+            pattern.AppendFormat(value, builder);
+            writer.WriteStringValue(FormattingBuffer.AsSpan(builder));
         }
-
-        /// <summary>
-        /// Creates a new instance with a pattern and an optional validator. The validator will be called before each
-        /// value is written, and may throw an exception to indicate that the value cannot be serialized.
-        /// </summary>
-        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
-        /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)
+        finally
         {
-            Preconditions.CheckNotNull(pattern, nameof(pattern));
-            this.pattern = pattern;
-            this.validator = validator;
+            FormattingBuffer.ReleaseBuilder(builder);
         }
+    }
 
-        /// <summary>
-        /// Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
-        /// a value of type T.
-        /// </summary>
-        /// <param name="reader">The JSON reader to pull data from</param>
-        /// <param name="options">The serializer options to use for nested serialization</param>
-        /// <returns>The deserialized value of type T.</returns>
-
-        protected override T ReadJsonImpl(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    /// <summary>
+    /// Writes the formatted value to the writer.
+    /// </summary>
+    /// <param name="writer">The writer to write JSON data to.</param>
+    /// <param name="value">The value to serialize.</param>
+    /// <param name="options">The serialization options to use for nested serialization.</param>
+    protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+    {
+        validator?.Invoke(value);
+        var builder = FormattingBuffer.AcquireBuilder();
+        try
         {
-            string text = reader.GetString();
-            return pattern.Parse(text).Value;
+            pattern.AppendFormat(value, builder);
+            writer.WritePropertyName(FormattingBuffer.AsSpan(builder));
         }
-
-        /// <summary>
-        /// Writes the formatted value to the writer.
-        /// </summary>
-        /// <param name="writer">The writer to write JSON data to</param>
-        /// <param name="value">The value to serialize</param>
-        /// <param name="options">The serializer options to use for nested serialization</param>
-        protected override void WriteJsonImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        finally
         {
-            validator?.Invoke(value);
-            var builder = FormattingBuffer.AcquireBuilder();
-            try
-            {
-                pattern.AppendFormat(value, builder);
-                writer.WriteStringValue(FormattingBuffer.AsSpan(builder));
-            }
-            finally
-            {
-                FormattingBuffer.ReleaseBuilder(builder);
-            }
-        }
-
-        /// <summary>
-        /// Writes the formatted value to the writer.
-        /// </summary>
-        /// <param name="writer">The writer to write JSON data to.</param>
-        /// <param name="value">The value to serialize.</param>
-        /// <param name="options">The serialization options to use for nested serialization.</param>
-        protected override void WriteJsonPropertyNameImpl(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-        {
-            validator?.Invoke(value);
-            var builder = FormattingBuffer.AcquireBuilder();
-            try
-            {
-                pattern.AppendFormat(value, builder);
-                writer.WritePropertyName(FormattingBuffer.AsSpan(builder));
-            }
-            finally
-            {
-                FormattingBuffer.ReleaseBuilder(builder);
-            }
+            FormattingBuffer.ReleaseBuilder(builder);
         }
     }
 }
