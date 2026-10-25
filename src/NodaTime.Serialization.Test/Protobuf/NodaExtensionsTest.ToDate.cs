@@ -4,10 +4,8 @@
 
 using Google.Type;
 using NodaTime.Serialization.Protobuf;
-using NodaTime.Text;
 using NUnit.Framework;
 using System;
-using ProtoDuration = Google.Protobuf.WellKnownTypes.Duration;
 
 namespace NodaTime.Serialization.Test.Protobuf;
 

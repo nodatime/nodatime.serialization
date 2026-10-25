@@ -2,10 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Runtime.Serialization;
-using System.Text.Json;
 using NodaTime.Utility;
-using NUnit.Framework;
+using System.Text.Json;
 using JsonConverter = System.Text.Json.Serialization.JsonConverter;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 

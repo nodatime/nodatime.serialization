@@ -4,7 +4,6 @@
 
 using Newtonsoft.Json;
 using NodaTime.Utility;
-using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet;
 

@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.Serialization.Test.JsonNet.TestHelper;
-
-using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NodaTime.Serialization.JsonNet;
 using NUnit.Framework;
+using System;
+using static NodaTime.Serialization.Test.JsonNet.TestHelper;
 
 namespace NodaTime.Serialization.Test.JsonNet;
 

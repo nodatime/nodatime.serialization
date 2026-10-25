@@ -4,7 +4,6 @@
 
 using Newtonsoft.Json;
 using NodaTime.TimeZones;
-using NodaTime.Utility;
 
 namespace NodaTime.Serialization.JsonNet;
 

@@ -2,12 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using NodaTime.Serialization.SystemTextJson;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 using NUnit.Framework;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NodaTime.Serialization.Test.SystemText;
